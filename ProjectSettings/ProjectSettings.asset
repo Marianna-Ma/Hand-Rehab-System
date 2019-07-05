@@ -633,7 +633,7 @@ PlayerSettings:
   cloudServicesEnabled:
     UNet: 1
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 3
   cloudProjectId: c42fdbe0-cd11-499b-9941-58ae4bf6d6b9
   projectName: Test
   organizationId: pengbobo
