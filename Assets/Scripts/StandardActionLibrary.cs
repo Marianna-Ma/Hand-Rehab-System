@@ -125,6 +125,14 @@ public class StandardActionLibrary : MonoBehaviour {
         OSSConnect.DownLoadFile(objectName, filePath);
     }
 
+    public static void downloadActions(string actName)
+    {
+        string objectName = "standard_actions/" + actName;
+        string filePath = Application.dataPath + "/StandardActionLibrary/" + actName;
+        Debug.Log("filePath: " + filePath);
+        OSSConnect.DownLoadFile(objectName, filePath);
+    }
+
     public void deletePicture(string picName)
     {
         string objectName = "standard_pictures/" + picName;
