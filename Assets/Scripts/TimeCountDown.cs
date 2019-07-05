@@ -33,7 +33,7 @@ public class TimeCountDown : MonoBehaviour {
     {
         while (time2 > 0)
         {
-            GameObjeect.Find("CountDownThreeText").GetComponent<Text>().text = time2.ToString();
+            GameObject.Find("CountDownThreeText").GetComponent<Text>().text = time2.ToString();
             yield return new WaitForSeconds(1);
             time2--;
         }
