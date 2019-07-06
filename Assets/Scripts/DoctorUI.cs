@@ -43,7 +43,25 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 			test.ChangeInfo (dcNameField.text.ToString(), dcSexField.text.ToString(), dcProField.text.ToString(), dcTeleField.text.ToString());
 		if (eventData.pointerPress.name == "addPatientButton")	//如果当前按下的按钮是添加患者按钮
 			test.AddPatient (ptIDField.text.ToString(), ptNameField.text.ToString(), ptSexField.text.ToString(), ptTeleField.text.ToString());
-		if (eventData.pointerPress.name == "deletePatientButton")	//如果当前按下的按钮是删除患者按钮
-			test.DeletePatient();
-	}
+		//if (eventData.pointerPress.name == "deletePatientButton")	//如果当前按下的按钮是删除患者按钮
+		//	test.DeletePatient();
+        if (eventData.pointerPress.name == "deletePatientButton")
+        {
+            //如果当前按下的按钮是删除患者按钮
+            GameObject table = GameObject.Find("Canvas/DoctorCheckPatientPanel/ScrollView/Viewport/Content");
+            List<string> strList = new List<string>();
+            Debug.Log("*******************************************");
+            foreach (Transform t in table.GetComponentsInChildren<Transform>())
+            {
+                if (t.name.Contains("patient".ToLower()) && t.Find("Toggle").GetComponent<Toggle>().isOn)
+                {
+                    strList.Add(t.Find("PatientID").GetComponent<Text>().text);
+                    Debug.Log("SelectedPatientID:" + t.Find("PatientID").GetComponent<Text>().text);
+                }
+            }
+            string[] ptID = strList.ToArray();
+            //test.DeletePatient(ptID);
+        }
+
+    }
 }
