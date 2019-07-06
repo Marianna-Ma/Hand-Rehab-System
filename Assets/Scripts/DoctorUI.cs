@@ -23,13 +23,13 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 	public InputField ptSexField;
 	public InputField ptTeleField;
 
-	public string host;				//IP地址
-	public string port;				//端口号
-	public string userName;			//用户名
-	public string password;			//密码
-	public string databaseName;		//数据库名称
+    public static string host = "119.3.231.171";                //IP地址
+    public static string port = "3306";             //端口号
+    public static string userName = "admin";            //用户名
+    public static string password = "Rehabsys@2019";            //密码
+    public static string databaseName = "rehabsys";     //数据库名称
 
-	public Doctor test;
+    public Doctor test;
 
 	// Use this for initialization
 	void Start () {
