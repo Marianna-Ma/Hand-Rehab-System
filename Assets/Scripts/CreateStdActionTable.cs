@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ButtonInfo
 {
     public string id;
+    public string actName;
     public GameObject obj;
 }
 
@@ -18,6 +19,7 @@ public class CreateStdActionTable : MonoBehaviour {
     string[,] actionTable;
     StandardActionLibrary actionLib;
     string localPicPath;
+    Transform root;
 
     // Use this for initialization
     void Start () {
@@ -26,8 +28,8 @@ public class CreateStdActionTable : MonoBehaviour {
         actionTable = actionLib.findStandardActions();
         if(actionTable[0, 0] != "null")
         {
-            GameObject table = GameObject.Find("ScrollView/Viewport/Content");
-            GameObject plandata = GameObject.Find("ScrollView/Viewport/Content/StdActionLibrary");
+            GameObject table = GameObject.Find("Canvas/CheckStdActionLibraryPanel/ScrollView/Viewport/Content");
+            GameObject plandata = GameObject.Find("Canvas/CheckStdActionLibraryPanel/ScrollView/Viewport/Content/StdActionLibrary");
             plandata.SetActive(false);
             Debug.Log("======================================================");
             //Debug.Log(actionTable.Length);
@@ -56,6 +58,7 @@ public class CreateStdActionTable : MonoBehaviour {
                     
                     ButtonInfo info = new ButtonInfo();
                     info.id = actionTable[i, 0];
+                    info.actName = actionTable[i, 1];
                     info.obj = row.transform.Find("ActionImageButton").GetComponent<Button>().gameObject;
                     row.transform.Find("ActionImageButton").GetComponent<Button>().onClick.AddListener(
                         delegate ()
@@ -64,18 +67,28 @@ public class CreateStdActionTable : MonoBehaviour {
                         }
                         );
                 }
-                row.transform.Find("ActionNameToggle").Find("Label").GetComponent<Text>().text = actionTable[i, 1];
-                
+                row.transform.Find("ActionNameToggle").Find("Label").GetComponent<Text>().text = actionTable[i, 1];      
                 row.SetActive(true);
             }
         }
-
+ 
     }
 
     void selectAction(ButtonInfo info)
     {
         Debug.Log("info: " + info.id);
+        Debug.Log("action Name: " + info.actName);
+        PlayerPrefs.SetString("selectStdActionID", info.id);
+        PlayerPrefs.SetString("selectStdActionName", info.actName);
+        string act_id = "";
+        string act_name = "";
+        act_id = PlayerPrefs.GetString("selectStdActionID");
+        act_name = PlayerPrefs.GetString("selectStdActionName");
+        Debug.Log(act_id);
+        Debug.Log(act_name);
     }
+
+
 	
 	// Update is called once per frame
 	void Update () {

@@ -9,8 +9,8 @@ public class CreatePlanTable : MonoBehaviour {
 
     void Start()
     {
-        GameObject table = GameObject.Find("ScrollView/Viewport/Content");
-        GameObject plandata = GameObject.Find("ScrollView/Viewport/Content/ActionPlanData");
+        GameObject table = GameObject.Find("Canvas/DoctorCheckPlanPanelNew/ScrollView/Viewport/Content");
+        GameObject plandata = GameObject.Find("Canvas/DoctorCheckPlanPanelNew/ScrollView/Viewport/Content/ActionPlanData");
         plandata.SetActive(false);
         for (int i = 0; i < 20; i++)//添加并修改预设的过程，将创建10行
         {
