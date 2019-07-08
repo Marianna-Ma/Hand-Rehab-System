@@ -4,40 +4,37 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonInfo
+public class DocButtonInfo
 {
     public string id;
     public string actName;
     public GameObject obj;
 }
 
-public class ToggleInfo
-{
-    public string id;
-    public bool status;
-    public GameObject obj;
-}
-
-
-public class CreateStdActionTable : MonoBehaviour {
+public class CreateDocCheckStdLibTable : MonoBehaviour {
 
     public GameObject PlanData_Prefab;//表头预设
-    string[,] actionTable;
     StandardActionLibrary actionLib;
     string localPicPath;
-    List<string> selectActList = new List<string>();
-
+    string[,] actionTable;
+    string patientName = "";
 
     // Use this for initialization
     void Start () {
+        PlayerPrefs.SetString("selectPatientID", "李四");
+        patientName = PlayerPrefs.GetString("selectPatientID");
+        GameObject.Find("Canvas/DoctorCheckStdActionLibraryPanel/NameText").GetComponent<Text>().text = patientName;
+
         localPicPath = Application.dataPath + "/StandardActionPic/";
         actionLib = new StandardActionLibrary();
         actionTable = actionLib.findStandardActions();
-        if(actionTable[0, 0] != "null")
+
+        if (actionTable[0, 0] != "null")
         {
-            GameObject table = GameObject.Find("Canvas/CheckStdActionLibraryPanel/ScrollView/Viewport/Content");
-            GameObject plandata = GameObject.Find("Canvas/CheckStdActionLibraryPanel/ScrollView/Viewport/Content/StdActionLibrary");
+            GameObject table = GameObject.Find("Canvas/DoctorCheckStdActionLibraryPanel/ScrollView/Viewport/Content");
+            GameObject plandata = GameObject.Find("Canvas/DoctorCheckStdActionLibraryPanel/ScrollView/Viewport/Content/DocCheckLib");
             plandata.SetActive(false);
+            
             //Debug.Log("======================================================");
             //Debug.Log(actionTable.Length);
             //actionLib.showFindActions(actionTable);
@@ -62,71 +59,34 @@ public class CreateStdActionTable : MonoBehaviour {
                     texture.LoadImage(bytes);
                     Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                     row.transform.Find("ActionImageButton").GetComponent<Image>().sprite = sprite;
-                    
-                    ButtonInfo info = new ButtonInfo();
+
+                    DocButtonInfo info = new DocButtonInfo();
                     info.id = actionTable[i, 0];
                     info.actName = actionTable[i, 1];
                     info.obj = row.transform.Find("ActionImageButton").GetComponent<Button>().gameObject;
                     row.transform.Find("ActionImageButton").GetComponent<Button>().onClick.AddListener(
                         delegate ()
                         {
-                            selectAction(info);
+                            docSelectAction(info);
                         }
                         );
                 }
-                row.transform.Find("ActionNameToggle").GetComponent<Toggle>().isOn = false;
-                row.transform.Find("ActionNameToggle").GetComponent<Toggle>().interactable = true;
-                ToggleInfo toggleInfo = new ToggleInfo();
-                toggleInfo.id = actionTable[i, 0];
-                toggleInfo.status = false;
-                row.transform.Find("ActionNameToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => chooseAction(toggleInfo));
-                row.transform.Find("ActionNameToggle").Find("Label").GetComponent<Text>().text = actionTable[i, 1];      
+              
+                row.transform.Find("Text").GetComponent<Text>().text = actionTable[i, 1];
                 row.SetActive(true);
             }
         }
- 
     }
-
-    void selectAction(ButtonInfo info)
+	
+    void docSelectAction(DocButtonInfo info)
     {
         Debug.Log("info: " + info.id);
         Debug.Log("action Name: " + info.actName);
         PlayerPrefs.SetString("selectStdActionID", info.id);
         PlayerPrefs.SetString("selectStdActionName", info.actName);
-        //string act_id = "";
-        //string act_name = "";
-        //act_id = PlayerPrefs.GetString("selectStdActionID");
-        //act_name = PlayerPrefs.GetString("selectStdActionName");
-        //Debug.Log(act_id);
-        //Debug.Log(act_name);
-    }
-
-    void chooseAction(ToggleInfo info)
-    {
-        info.status = !info.status;
-        Debug.Log("info id: " + info.id);
-        Debug.Log("info status: " + info.status);
-        if (info.status == true)
-            selectActList.Add(info.id);
-        else
-            selectActList.Remove(info.id);
-        foreach (string id in selectActList)
-            Debug.Log(id);
-    }
-
-    public void getSelectActList(List<string> newList)
-    {
-        Debug.Log("*******************************");
-        foreach (string id in selectActList)
-        {
-            Debug.Log(id);
-            newList.Add(id);
-
-        }
 
     }
 
-	
 	// Update is called once per frame
 	void Update () {
 		
