@@ -11,6 +11,13 @@ public class ButtonInfo
     public GameObject obj;
 }
 
+public class ToggleInfo
+{
+    public string id;
+    public bool status;
+    public GameObject obj;
+}
+
 
 public class CreateStdActionTable : MonoBehaviour {
 
@@ -20,9 +27,12 @@ public class CreateStdActionTable : MonoBehaviour {
     StandardActionLibrary actionLib;
     string localPicPath;
     Transform root;
+    public List<string> selectActList = new List<string>();
+    
 
     // Use this for initialization
     void Start () {
+        selectActList = new List<string>();
         localPicPath = Application.dataPath + "/StandardActionPic/";
         actionLib = new StandardActionLibrary();
         actionTable = actionLib.findStandardActions();
@@ -31,7 +41,7 @@ public class CreateStdActionTable : MonoBehaviour {
             GameObject table = GameObject.Find("Canvas/CheckStdActionLibraryPanel/ScrollView/Viewport/Content");
             GameObject plandata = GameObject.Find("Canvas/CheckStdActionLibraryPanel/ScrollView/Viewport/Content/StdActionLibrary");
             plandata.SetActive(false);
-            Debug.Log("======================================================");
+            //Debug.Log("======================================================");
             //Debug.Log(actionTable.Length);
             //actionLib.showFindActions(actionTable);
             for (int i = 0; i < actionTable.GetLength(0); i++)//添加并修改预设的过程，将创建10行
@@ -67,6 +77,12 @@ public class CreateStdActionTable : MonoBehaviour {
                         }
                         );
                 }
+                row.transform.Find("ActionNameToggle").GetComponent<Toggle>().isOn = false;
+                row.transform.Find("ActionNameToggle").GetComponent<Toggle>().interactable = true;
+                ToggleInfo toggleInfo = new ToggleInfo();
+                toggleInfo.id = actionTable[i, 0];
+                toggleInfo.status = false;
+                row.transform.Find("ActionNameToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => chooseAction(toggleInfo));
                 row.transform.Find("ActionNameToggle").Find("Label").GetComponent<Text>().text = actionTable[i, 1];      
                 row.SetActive(true);
             }
@@ -80,14 +96,38 @@ public class CreateStdActionTable : MonoBehaviour {
         Debug.Log("action Name: " + info.actName);
         PlayerPrefs.SetString("selectStdActionID", info.id);
         PlayerPrefs.SetString("selectStdActionName", info.actName);
-        string act_id = "";
-        string act_name = "";
-        act_id = PlayerPrefs.GetString("selectStdActionID");
-        act_name = PlayerPrefs.GetString("selectStdActionName");
-        Debug.Log(act_id);
-        Debug.Log(act_name);
+        //string act_id = "";
+        //string act_name = "";
+        //act_id = PlayerPrefs.GetString("selectStdActionID");
+        //act_name = PlayerPrefs.GetString("selectStdActionName");
+        //Debug.Log(act_id);
+        //Debug.Log(act_name);
     }
 
+    void chooseAction(ToggleInfo info)
+    {
+        info.status = !info.status;
+        Debug.Log("info id: " + info.id);
+        Debug.Log("info status: " + info.status);
+        if (info.status == true)
+            selectActList.Add(info.id);
+        else
+            selectActList.Remove(info.id);
+        foreach (string id in selectActList)
+            Debug.Log(id);
+    }
+
+    public void getSelectActList(List<string> newList)
+    {
+        Debug.Log("*******************************");
+        foreach (string id in selectActList)
+        {
+            Debug.Log(id);
+            newList.Add(id);
+
+        }
+
+    }
 
 	
 	// Update is called once per frame

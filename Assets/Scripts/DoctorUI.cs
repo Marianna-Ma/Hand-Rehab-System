@@ -50,7 +50,7 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
             //如果当前按下的按钮是删除患者按钮
             GameObject table = GameObject.Find("Canvas/DoctorCheckPatientPanel/ScrollView/Viewport/Content");
             List<string> strList = new List<string>();
-            Debug.Log("*******************************************");
+            //Debug.Log("*******************************************");
             foreach (Transform t in table.GetComponentsInChildren<Transform>())
             {
                 if (t.name.Contains("patient".ToLower()) && t.Find("Toggle").GetComponent<Toggle>().isOn)

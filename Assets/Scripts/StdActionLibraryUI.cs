@@ -18,7 +18,8 @@ public class StdActionLibraryUI : MonoBehaviour, IPointerClickHandler {
 
 	// Use this for initialization
 	void Start () {
-        patient_id = "400002";
+        PlayerPrefs.SetString("selectStdActionID", "400002");
+        patient_id = PlayerPrefs.GetString("selectStdActionID");
         GameObject.Find("StdActionLibraryID").GetComponent<Text>().text = patient_id;
         
     }
