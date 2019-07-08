@@ -21,12 +21,8 @@ public class CheckStdActionLibraryPanel : MonoBehaviour, IPointerClickHandler{
             //跳转到添加动作界面
 
             Debug.Log("clickclick");
-            string act_id = "";
-            string act_name = "";
-            act_id = PlayerPrefs.GetString("selectStdActionID");
-            act_name = PlayerPrefs.GetString("selectStdActionName");
-            Debug.Log("act_id: " + act_id);
-            Debug.Log("act_name: " + act_name);
+            string next_id = stdlib.getActionId();
+            Debug.Log(next_id);
         }
         if (eventData.pointerPress.name == "DeleteActionButton")
         {
