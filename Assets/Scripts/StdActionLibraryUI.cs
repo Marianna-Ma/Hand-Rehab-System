@@ -13,14 +13,14 @@ public class StdActionLibraryUI : MonoBehaviour, IPointerClickHandler {
     public InputField actionPicPath;
 
     Text stdActionID;
-    string patient_id;
+    string action_id;
 
 
 	// Use this for initialization
 	void Start () {
-        PlayerPrefs.SetString("selectStdActionID", "400002");
-        patient_id = PlayerPrefs.GetString("selectStdActionID");
-        GameObject.Find("StdActionLibraryID").GetComponent<Text>().text = patient_id;
+        //PlayerPrefs.SetString("newActionID", "400008");
+        action_id = PlayerPrefs.GetString("newActionID");
+        GameObject.Find("StdActionLibraryID").GetComponent<Text>().text = action_id;
         
     }
 
@@ -57,12 +57,25 @@ public class StdActionLibraryUI : MonoBehaviour, IPointerClickHandler {
             Debug.Log("动作名： " + actionNameInput.text.ToString());
             Debug.Log("动作图片路径" + actionPicPath.text.ToString());
             StandardActionLibrary stdlibrary = new StandardActionLibrary();
-            stdlibrary.addStandardAction(patient_id, actionNameInput.text.ToString(), actionPicPath.text.ToString());
+            stdlibrary.addStandardAction(action_id, actionNameInput.text.ToString(), actionPicPath.text.ToString());
 
             Messagebox.MessageBox(IntPtr.Zero, "添加标准动作成功！", "成功", 0);
+            GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("");
         }
     }
 
+    public void ClickTranscribeButton_Left()
+    {
+        PlayerPrefs.SetString("handtype", "0");
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminChangeStandardAcitonPanel");
+    }
+
+    public void ClickTranscribeButton_Right()
+    {
+        PlayerPrefs.SetString("handtype", "1");
+            
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminChangeStandardAcitonPanel");
+    }
 
     // Update is called once per frame
     void Update () {

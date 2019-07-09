@@ -5,18 +5,28 @@ using UnityEngine.UI;
 
 public class TimeCountDown : MonoBehaviour {
     public GameObject textField;
+    //GameObject leftHand;
+    //GameObject rightHand;
     public int time = 30; //此处使用数据库中读取的数据
     public int time2 = 3;
 	// Use this for initialization
 	void Start () {
+        //GameObject.Find("leftHand").SetActive(true);
+        //GameObject.Find("rightHand").SetActive(true);
+        //GameObject.Find("LeapControlledHands/leftHand").SetActive(true);
+        //GameObject.Find("LeapControlledHands/rightHand").SetActive(true);
+        GameObject.Find("Canvas").GetComponent<HandControl>.ShowHands();
         StartCoroutine(Count());
         GameObject.Find("CountDownThreeText").GetComponent<Text>().text = "";
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        //GameObject.Find("LeapControlledHands/leftHand").SetActive(true);
+        //GameObject.Find("LeapControlledHands/rightHand").SetActive(true);
+        //GameObject.Find("LeapControlledHands/leftHand").SetActive(true);
+        //GameObject.Find("LeapControlledHands/rightHand").SetActive(true);
+    }
 
     IEnumerator Count()
     {
@@ -38,6 +48,15 @@ public class TimeCountDown : MonoBehaviour {
             time2--;
         }
         GameObject.Find("CountDownThreeText").GetComponent<Text>().text = "开始测评";
+        yield return new WaitForSeconds(1);
+        GameObject.Find("CountDownThreeText").GetComponent<Text>().text = "";
+        GameObject.Find("PatientTrainPanel").GetComponent<evaluate>().StartToEvaluate();
+    }
+
+    public void ClickBackButton()
+    {
+        GameObject.Find("PatientTrainPanel").GetComponent<evaluate>().LeaveEvaluation();
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientStartPanel");
     }
 
     void TrainOver()
@@ -52,6 +71,5 @@ public class TimeCountDown : MonoBehaviour {
         GameObject.Find("TimeCountDownText").SetActive(false);
         StartCoroutine(CountThree());
         GameObject.Find("CountDownThreeText").GetComponent<Text>().text =time2.ToString();
-
     }
 }

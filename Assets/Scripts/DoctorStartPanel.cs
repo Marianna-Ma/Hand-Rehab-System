@@ -30,12 +30,13 @@ public class DoctorStartPanel : MonoBehaviour {
     //病人管理窗口
     public void ClickCheckButton()
     {
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPatientPanel");
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPatientPanelNew");
     }
 
     //返回登录界面
     public void ClickQuitButton()
     {
+        PlayerPrefs.DeleteAll();
         GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPreviousPanel();
     }
 }

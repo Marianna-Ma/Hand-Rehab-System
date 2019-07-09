@@ -21,7 +21,7 @@ public class CreateDocCheckStdLibTable : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        PlayerPrefs.SetString("selectPatientID", "李四");
+        //PlayerPrefs.SetString("selectPatientID", "李四");
         patientName = PlayerPrefs.GetString("selectPatientID");
         GameObject.Find("Canvas/DoctorCheckStdActionLibraryPanel/NameText").GetComponent<Text>().text = patientName;
 
@@ -84,6 +84,7 @@ public class CreateDocCheckStdLibTable : MonoBehaviour {
         Debug.Log("action Name: " + info.actName);
         PlayerPrefs.SetString("selectStdActionID", info.id);
         PlayerPrefs.SetString("selectStdActionName", info.actName);
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorSetPlanPanel");
 
     }
 

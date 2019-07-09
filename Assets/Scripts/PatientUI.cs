@@ -7,6 +7,14 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System;
 using System.Data;
+/*
+public class ToggleInfo
+{
+	public string id;
+	public bool status;
+	public GameObject obj;
+}
+*/
 
 public class PatientUI : MonoBehaviour, IPointerClickHandler {
 	// 修改密码 面板的输入框
@@ -60,7 +68,7 @@ public class PatientUI : MonoBehaviour, IPointerClickHandler {
 			noRecord.SetActive (true);
 			Debug.Log ("row " + records.GetLength(0));
 			Debug.Log ("col " + (records.GetUpperBound (records.Rank - 1) + 1));
-			if (records.GetUpperBound (records.Rank - 1) + 1 == 4) {
+			if (records.GetUpperBound (records.Rank - 1) + 1 == 5) {
 				noRecord.SetActive (false);
 				for (int i = 0; i < records.GetLength (0); i++) {
 					GameObject row = GameObject.Instantiate (historyRecordsPrefab, table.transform.position, table.transform.rotation) as GameObject;
@@ -68,9 +76,8 @@ public class PatientUI : MonoBehaviour, IPointerClickHandler {
 					row.transform.SetParent (table.transform);
 					row.transform.localScale = Vector3.one;
 					ToggleInfo toggleInfo = new ToggleInfo();
-                    //toggleInfo.info = records[i, 0] + records[i,1] + records[i,3];
-                    toggleInfo.id = records[i, 0] + records[i, 1] + records[i, 3];
-                    toggleInfo.status = false;
+					toggleInfo.id = records[i, 0] + records[i,1] + records[i,3];
+					toggleInfo.status = false;
 					row.transform.Find("Toggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => chooseRecord(toggleInfo));
 					row.transform.Find ("recordDate").GetComponent<Text> ().text = records [i, 0];
 					row.transform.Find ("actionID").GetComponent<Text> ().text = records [i, 1];
@@ -79,12 +86,23 @@ public class PatientUI : MonoBehaviour, IPointerClickHandler {
 						row.transform.Find ("handIndex").GetComponent<Text> ().text = "左手";
 					else
 						row.transform.Find ("handIndex").GetComponent<Text> ().text = "右手";
+					
+					if (Convert.ToDouble (records [i, 4]) < 0.5) {
+						row.transform.Find ("estimateValue").GetComponent<Text> ().text = "差";
+					} else if (Convert.ToDouble (records [i, 4]) < 0.75 && Convert.ToDouble (records [i, 4]) >= 0.5) {
+						row.transform.Find ("estimateValue").GetComponent<Text> ().text = "可";
+					} else if (Convert.ToDouble (records [i, 4]) < 0.9 && Convert.ToDouble (records [i, 4]) >= 0.75) {
+						row.transform.Find ("estimateValue").GetComponent<Text> ().text = "良";
+					} else if (Convert.ToDouble (records [i, 4]) >= 0.9) {
+						row.transform.Find ("estimateValue").GetComponent<Text> ().text = "优";
+					}
+
 					row.transform.Translate (230, -15 - i * 25, 0);
 					row.SetActive (true);
 
 				}
 			} else {
-				noRecord.SetActive (false);
+				noRecord.SetActive (true);
 			}
 
 			Debug.Log ("111111111111111111111111111111111111111111111111");
@@ -172,7 +190,7 @@ public class PatientUI : MonoBehaviour, IPointerClickHandler {
 	void chooseRecord(ToggleInfo info)
 	{
 		info.status = !info.status;
-		Debug.Log("info id: " + info.id);
+		Debug.Log("info info: " + info.id);
 		Debug.Log("info status: " + info.status);
 		if (info.status == true) {
 			selectRecordList.Add (info.id);

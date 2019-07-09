@@ -67,7 +67,8 @@ public class TrainingPlan{
     {
         MySqlAccess mysql = new MySqlAccess(host, port, userName, password, databaseName);
         mysql.OpenSql();
-        string querySql = "select * from trp where trp_ptID = '" + trp_ptID + "' and trp_totl > trp_finish";
+        string querySql = "select trp_ptID,trp_actID,ac_name,trp_hand,trp_num,trp_time,trp_totl,trp_finish,trp_alnum" +
+            " from trp,act where trp_ptID = '" + trp_ptID + "' and trp_actID=ac_id and trp_totl > trp_finish";
         DataSet ds = mysql.SimpleSql(querySql);
         mysql.Close();
         return ds;
@@ -134,8 +135,8 @@ public class TrainingPlan{
     {
         MySqlAccess mysql = new MySqlAccess(host, port, userName, password, databaseName);
         mysql.OpenSql();
-        string querySql = "select trp.trp_actID,act.ac_name,trp.trp_num,trp.trp_time,trp.trp_totl from trp,act " +
-            "where trp.trp_ptID = '" + trp_ptID + "' and trp.trp_actID=act.ac_id";
+        string querySql = "select trp_ptID,trp_actID,ac_name,trp_hand,trp_num,trp_time,trp_totl from trp,act " +
+            "where trp_ptID = '" + trp_ptID + "' and trp_actID=ac_id";
         DataSet ds = mysql.SimpleSql(querySql);
         mysql.Close();
         return ds;
@@ -146,11 +147,10 @@ public class TrainingPlan{
         MySqlAccess mysql = new MySqlAccess(host, port, userName, password, databaseName);
         mysql.OpenSql();
         string querySql = "select trp.trp_actID,act.ac_name,trp.trp_num,trp.trp_time,trp.trp_totl from trp,act " +
-            "where trp.trp_ptID = '" + trp_ptID + "' and trp.trp_actID=act.ac_id and act.ac_name like '%" + name + "%'";
+            "where trp.trp_ptID = '" + trp_ptID + "' and trp.trp_actID=act.ac_id and act.ac_name like '%"+name+"%'";
         DataSet ds = mysql.SimpleSql(querySql);
         mysql.Close();
         return ds;
     }
-
 
 }

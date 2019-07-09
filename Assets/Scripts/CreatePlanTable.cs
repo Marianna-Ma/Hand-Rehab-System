@@ -14,6 +14,14 @@ public class PlanToggleInfo
     public GameObject obj;
 }
 
+public class PlanButtonInfo
+{
+    public string id;
+    public string actName;
+    public int hand;
+    public GameObject obj;
+}
+
 public class CreatePlanTable : MonoBehaviour {
     
     public DataSet currentTP;
@@ -27,8 +35,17 @@ public class CreatePlanTable : MonoBehaviour {
         table = GameObject.Find("Canvas/DoctorCheckPlanPanelNew");
     }
 
-    void Start()
+    public void Start()
     {
+        GameObject table = GameObject.Find("Canvas/DoctorCheckPlanPanelNew/ScrollView/Viewport/Content");
+        foreach (Transform t in table.GetComponentsInChildren<Transform>())
+        {
+            if (t.name.Contains("plan".ToLower()))
+            {
+                Destroy(t.gameObject);//删除之前的内容
+            }
+        }
+
         currentTP = TrainingPlan.findOnesTrainingPlan("300001"); //TODO：获得病人编号
        
         if (currentTP.Tables[0].Rows.Count > 0)
@@ -76,7 +93,7 @@ public class CreatePlanTable : MonoBehaviour {
                                                    //设置预设实例中的各个子物体的文本内容
 
             using (FileStream file = new FileStream(Application.dataPath +
-                "/StandardActionPic/" + dataSet.Tables[0].Rows[i][0] + ".jpg", FileMode.Open, FileAccess.Read))
+                "/StandardActionPic/" + dataSet.Tables[0].Rows[i][1] + ".jpg", FileMode.Open, FileAccess.Read))
             {
                 file.Seek(0, SeekOrigin.Begin);
 
@@ -88,9 +105,10 @@ public class CreatePlanTable : MonoBehaviour {
                 row.transform.Find("ActionImageButton").GetComponent<Image>().sprite = sprite;  //TODO：给按钮加图片
             }
 
-            ButtonInfo info = new ButtonInfo();
-            info.id = (string)dataSet.Tables[0].Rows[i][0];
-            info.actName = (string)dataSet.Tables[0].Rows[i][1];
+            PlanButtonInfo info = new PlanButtonInfo();
+            info.id = (string)dataSet.Tables[0].Rows[i][1];
+            info.actName = (string)dataSet.Tables[0].Rows[i][2];
+            info.hand = int.Parse(dataSet.Tables[0].Rows[i][3].ToString());
             info.obj = row.transform.Find("ActionImageButton").GetComponent<Button>().gameObject;
             row.transform.Find("ActionImageButton").GetComponent<Button>().onClick.AddListener(
                 delegate ()
@@ -99,24 +117,26 @@ public class CreatePlanTable : MonoBehaviour {
                 }
                 );
             row.transform.Find("ActionNameToggle").GetComponent<Toggle>().isOn = false;
-            row.transform.Find("ActionNameToggle").Find("Label").GetComponent<Text>().text = (string)dataSet.Tables[0].Rows[i][1];
+            row.transform.Find("ActionNameToggle").Find("Label").GetComponent<Text>().text = (string)dataSet.Tables[0].Rows[i][2];
             PlanToggleInfo toggleInfo = new PlanToggleInfo();
-            toggleInfo.id = dataSet.Tables[0].Rows[i][0].ToString();
+            toggleInfo.id = dataSet.Tables[0].Rows[i][1].ToString();
+            toggleInfo.hand = int.Parse(dataSet.Tables[0].Rows[i][3].ToString());
             toggleInfo.status = false;
             row.transform.Find("ActionNameToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => chooseAction(toggleInfo));
-            row.transform.Find("Time").Find("TimeText").GetComponent<Text>().text = dataSet.Tables[0].Rows[i][3].ToString();
-            row.transform.Find("Num").Find("NumText").GetComponent<Text>().text = dataSet.Tables[0].Rows[i][2].ToString();
-            row.transform.Find("Day").Find("DayText").GetComponent<Text>().text = dataSet.Tables[0].Rows[i][4].ToString();
+            row.transform.Find("Time").Find("TimeText").GetComponent<Text>().text = dataSet.Tables[0].Rows[i][5].ToString();
+            row.transform.Find("Num").Find("NumText").GetComponent<Text>().text = dataSet.Tables[0].Rows[i][4].ToString();
+            row.transform.Find("Day").Find("DayText").GetComponent<Text>().text = dataSet.Tables[0].Rows[i][6].ToString();
             row.SetActive(true);
         }
     }
 
-    void selectAction(ButtonInfo info)
+    void selectAction(PlanButtonInfo info)
     {
         Debug.Log("info: " + info.id);
         Debug.Log("action Name: " + info.actName);
         PlayerPrefs.SetString("selectStdActionID", info.id);
         PlayerPrefs.SetString("selectStdActionName", info.actName);
+        PlayerPrefs.SetInt("selectPlanHand", info.hand);
     }
 
     void chooseAction(PlanToggleInfo info)

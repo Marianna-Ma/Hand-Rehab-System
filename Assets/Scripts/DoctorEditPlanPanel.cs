@@ -9,7 +9,7 @@ public class DoctorEditPlanPanel : MonoBehaviour, IPointerClickHandler{
     public InputField setTimes;
     public InputField setSpan;
 
-    string patient_id = "";
+    string action_id = "";
     string select_act_id = "";
     string select_act_name = "";
     int select_hand = 0;
@@ -32,7 +32,7 @@ public class DoctorEditPlanPanel : MonoBehaviour, IPointerClickHandler{
         select_days = PlayerPrefs.GetString("selectPlanDays");
         select_times = PlayerPrefs.GetString("selectPlanTimes");
         select_span = PlayerPrefs.GetString("selectPlanSpan");
-        patient_id = PlayerPrefs.GetString("selectPatientID");
+        action_id = PlayerPrefs.GetString("selectPatientID");
 
         //设置初始值
         GameObject.Find("Canvas/DoctorEditPlanPanel/SetPlanIDText").GetComponent<Text>().text = select_act_id;
@@ -58,7 +58,7 @@ public class DoctorEditPlanPanel : MonoBehaviour, IPointerClickHandler{
             string set_times = setTimes.text.ToString();
             string set_span = setSpan.text.ToString();
             Debug.Log(select_hand + " " + set_day + " " + set_times + " " + set_span);
-            //TrainingPlan.changeTrainingPlan(patient_id, select_act_id, select_hand, int.Parse(set_times), int.Parse(set_span), int.Parse(set_day));
+            //TrainingPlan.changeTrainingPlan(action_id, select_act_id, select_hand, int.Parse(set_times), int.Parse(set_span), int.Parse(set_day));
         }
 
     }

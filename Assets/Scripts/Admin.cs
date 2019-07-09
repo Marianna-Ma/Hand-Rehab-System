@@ -94,7 +94,7 @@ public class Admin : MonoBehaviour {
 	/// <summary>
 	/// 按下AddDoctor按钮
 	/// </summary>
-	public void AddDoctor(string dc_id, string dc_name, string dc_sex, string dc_pro, string dc_tele) {
+	public int AddDoctor(string dc_id, string dc_name, string dc_sex, string dc_pro, string dc_tele) {
 		mysql = new MySqlAccess(host, port, userName, password, databaseName);
 		mysql.OpenSql ();
 		string dcID = dc_id;
@@ -104,9 +104,18 @@ public class Admin : MonoBehaviour {
 		string dcTele = dc_tele;
 
 		int flag = 1; // 1可添加，0不可添加
-		if (dcID == "" | dcName == "") {
+        string querySql = "select * from doc where dc_id = '" + dcID + "'";
+        DataSet dsn = mysql.SimpleSql(querySql);
+        if (dsn.Tables[0].Rows.Count != 0)
+        {
+            mysql.Close();
+            return 3;
+        }
+        if (dcID == "" | dcName == "") {
 			flag = 0;
 			Debug.Log ("医生编号和姓名不能为空");
+            mysql.Close();
+            return 1;
 		}
 		if (dcID != "") {
 			string query = "select * from ppl where ppl_id = " + dcID;
@@ -115,6 +124,8 @@ public class Admin : MonoBehaviour {
 			if (table.Rows.Count == 0) {
 				flag = 0;
 				Debug.Log ("医生编号不在人员表中");
+                mysql.Close();
+                return 2;
 			}
 		}
 		if (flag == 1) {
@@ -124,9 +135,11 @@ public class Admin : MonoBehaviour {
 			string query1 = "update ppl set ppl_act = 1 where ppl_id = '" + dcID + "'";
 			DataSet ds1 = mysql.QuerySet (query1);
 			Debug.Log ("添加医生账号成功，医生编号：" + dcID);
-		}
-		mysql.Close ();
-	}
+            
+        }
+        mysql.Close();
+        return 0;
+    }
 
 	/// <summary>
 	/// 查询所有医生，返回医生编号、姓名、性别、职称、电话
@@ -173,5 +186,87 @@ public class Admin : MonoBehaviour {
 			DataSet ds = mysql.QuerySet (query);
 		}
 		mysql.Close ();
+	}
+
+
+	/// <summary>
+	/// 返回某个病人的可查询的历史记录
+	/// </summary>
+	public string[,] SelectRecords(string start_date, string end_date) {
+//		PlayerPrefs.SetString ("selectPatientID", "300001");
+		string ptID = "";
+		if (PlayerPrefs.HasKey("selectPatientID")) {
+			ptID = PlayerPrefs.GetString ("selectPatientID");
+		}
+		Debug.Log ("ptID" + ptID);
+
+		string nowTime;
+		nowTime = DateTime.Now.ToString ("yyyyMMdd");
+		int nowTimeInt = Convert.ToInt32 (nowTime);
+//		Debug.Log ("nowTime" + nowTime);
+
+		string[,] res = new string[1, 1];
+		res [0, 0] = "";
+		int startDateInt = Convert.ToInt32(start_date);
+		int endDateInt = Convert.ToInt32(end_date);
+		if (startDateInt > endDateInt) {
+			Debug.Log ("开始日期大于结束日期！");
+		} else if (startDateInt > nowTimeInt || endDateInt > nowTimeInt) {
+			Debug.Log ("开始日期或结束日期大于今日日期！");
+		} else {
+			mysql = new MySqlAccess(host, port, userName, password, databaseName);
+			mysql.OpenSql ();
+
+			string query = "select rec_date, ac_id, ac_name, rec_hand, rec_test from rec,act where ac_id = rec_actID and rec_ptID = '" + ptID + "' and rec_date >= '" + start_date + "' and rec_date <= '" + end_date + "'";
+			DataSet ds = mysql.QuerySet (query);
+			DataTable table = ds.Tables [0];
+			int row_num = table.Rows.Count;
+			if (row_num != 0) {
+				int col_num = table.Rows [0].ItemArray.Length;
+				res = new string[row_num, col_num];
+				for (int i = 0; i < row_num; i++) {
+					for (int j = 0; j < col_num; j++) {
+						res [i, j] = table.Rows [i] [j].ToString ();
+					}
+				}
+			} 
+			mysql.Close ();
+			int row = res.GetLength (0);
+			int col = res.GetUpperBound (res.Rank - 1) + 1;
+			for (int i = 0; i < row; i++)
+				for (int j = 0; j < col; j++)
+					Debug.Log (res [i, j]);
+		}
+		return res;
+	}
+
+	/// <summary>
+	/// 返回某条历史训练记录的json文件名
+	/// </summary>
+	public string HistoryRecord(string Date, string actID, int Hand) {
+		string ptID = "";
+		if (PlayerPrefs.HasKey("selectPatientID")) {
+			ptID = PlayerPrefs.GetString ("selectPatientID");
+		}
+		Debug.Log ("ptID" + ptID);
+
+		string date = Date;
+		string act_id = actID;
+		int hand = Hand;
+
+		mysql = new MySqlAccess(host, port, userName, password, databaseName);
+		mysql.OpenSql ();
+		string query = "select rec_link from rec where rec_ptID = '" + ptID + "' and rec_hand = " + hand + 
+			" and rec_actID = '" + act_id + "' and rec_date = '" + date + "'";
+		DataSet ds = mysql.QuerySet (query);
+		DataTable table = ds.Tables [0];
+		string res = "";
+		Debug.Log (table.Rows.Count);
+		if (table.Rows.Count == 1) {
+			res = table.Rows [0] [0].ToString();
+		}
+		Debug.Log (res);
+		mysql.Close ();
+		return res;
 	}
 }

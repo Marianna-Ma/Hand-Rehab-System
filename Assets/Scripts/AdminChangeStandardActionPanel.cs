@@ -17,6 +17,11 @@ public class AdminChangeStandardActionPanel : MonoBehaviour {
 
     private void OnEnable()
     {
+        //CountDownThree();
+    }
+
+    public void ClickTranscribeButton()
+    {
         CountDownThree();
     }
 
@@ -36,5 +41,11 @@ public class AdminChangeStandardActionPanel : MonoBehaviour {
         }
         GameObject.Find("CountDownThreeText").GetComponent<Text>().text = "开始记录标准动作";
         //记录标准动作
+        string hand_type = PlayerPrefs.GetString("handtype");
+        string act_id = PlayerPrefs.GetString("newActionID");
+        Debug.Log(hand_type + " " + act_id);
+        StandardActionLibrary stdlibrary = new StandardActionLibrary();
+        stdlibrary.saveStandardAction(act_id, hand_type);
+
     }
 }

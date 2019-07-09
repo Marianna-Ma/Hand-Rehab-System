@@ -3,50 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Leap.Unity;
 using Leap;
-using System.Data;
 
 public class TestLeftHand : MonoBehaviour {
     LeapProvider provider;
     List<Hand> leftHands;
     //public GameObject ob;
 
-    //IP地址
-    public string host;
-    //端口号
-    public string port;
-    //用户名
-    public string userName;
-    //密码
-    public string password;
-    //数据库名称
-    public string databaseName;
-    //封装好的数据库类
-    MySqlAccess mysql;
-
     // Use this for initialization
     void Start () {
         provider = FindObjectOfType<LeapProvider>() as LeapProvider;
         leftHands = new List<Hand>();
-
-        mysql = new MySqlAccess(host, port, userName, password, databaseName);
-        //testMysql();
-    }
-
-    void testMysql()
-    {
-        DataSet ds = mysql.SimpleSql("Select * from act");
-        if (ds != null)
-        {
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-            {
-                for (int j = 0; j < ds.Tables[0].Rows[i].ItemArray.Length; j++)
-                {
-                    Debug.Log("Result" + i + ":" + ds.Tables[0].Rows[i][j]);
-                }
-            }
-        }
-        else Debug.Log("无结果");
-        mysql.Close();
     }
 	
 	// Update is called once per frame

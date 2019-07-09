@@ -293,7 +293,7 @@ public class StandardActionLibrary : MonoBehaviour {
     public void saveStandardAction(string hand_id, string handtype)
     {
         Debug.Log("flag_S: " + flag_S);
-        path = "/Datas/" + hand_id + handtype + ".json";
+        path = "/StandardActionLibrary/" + hand_id + handtype + ".json";
         flag_S = 1;
         allowSaveData = true;
         

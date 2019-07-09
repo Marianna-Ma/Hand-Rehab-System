@@ -39,6 +39,7 @@ public class PatientStartPanel : MonoBehaviour {
     public void ClickQuitButton()
     {
         //注销player
+        PlayerPrefs.DeleteAll();
         GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPreviousPanel();
     }
 }

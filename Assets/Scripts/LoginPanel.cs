@@ -8,8 +8,9 @@ public class LoginPanel : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         gameObject.SetActive(true);
-        GameObject.Find("leftHand").SetActive(false);
-        GameObject.Find("rightHand").SetActive(false);
+        //GameObject.Find("LeapControlledHands/leftHand").SetActive(false);
+        //GameObject.Find("LeapControlledHands/rightHand").SetActive(false);
+        //GameObject.Find("Canvas").GetComponent<HandControl>.
     }
 	
 	// Update is called once per frame

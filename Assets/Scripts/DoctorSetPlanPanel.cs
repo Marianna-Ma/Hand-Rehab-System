@@ -14,9 +14,9 @@ public class DoctorSetPlanPanel : MonoBehaviour, IPointerClickHandler{
 
     // Use this for initialization
     void Start () {
-        PlayerPrefs.SetString("selectPatientID", "300001");
-        PlayerPrefs.SetString("selectStdActionID", "400002");
-        PlayerPrefs.SetString("selectStdActionName", "食指伸展");
+        //PlayerPrefs.SetString("selectPatientID", "300001");
+        //PlayerPrefs.SetString("selectStdActionID", "400002");
+        //PlayerPrefs.SetString("selectStdActionName", "食指伸展");
         
         select_act_id = PlayerPrefs.GetString("selectStdActionID");
         select_act_name = PlayerPrefs.GetString("selectStdActionName");

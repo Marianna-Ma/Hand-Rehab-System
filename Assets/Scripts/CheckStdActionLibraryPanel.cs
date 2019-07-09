@@ -22,7 +22,10 @@ public class CheckStdActionLibraryPanel : MonoBehaviour, IPointerClickHandler{
 
             Debug.Log("clickclick");
             string next_id = stdlib.getActionId();
+            PlayerPrefs.SetString("newActionID", next_id);
             Debug.Log(next_id);
+
+            GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AddStdActionLibraryPanel");
         }
         if (eventData.pointerPress.name == "DeleteActionButton")
         {
@@ -35,7 +38,12 @@ public class CheckStdActionLibraryPanel : MonoBehaviour, IPointerClickHandler{
 
             }
         }
+        if (eventData.pointerPress.name == "BackButton")
+        {
+            //跳转到开始界面
 
+            GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminStartPanel");
+        }
 
     }
 

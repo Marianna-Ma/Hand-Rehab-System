@@ -29,7 +29,9 @@ public class AdminStartPanel : MonoBehaviour {
     //跳转到训练计划管理界面
     public void ClickAdminTrainPlanButton()
     {
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminChangeStandardAcitonPanel");
+        //GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminChangeStandardAcitonPanel");
+        //GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AddStdActionLibraryPanel");
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("CheckStdActionLibraryPanel");
     }
 
     //跳转到查看病人信息界面
@@ -42,6 +44,7 @@ public class AdminStartPanel : MonoBehaviour {
     public void ClickQuitButton()
     {
         //此处是否要注销player？
+        PlayerPrefs.DeleteAll();
         GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPreviousPanel();
     }
 
