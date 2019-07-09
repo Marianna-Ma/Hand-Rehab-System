@@ -5,6 +5,7 @@ using UnityEngine;
 using Leap;
 using Leap.Unity;
 using System;
+using UnityEngine.UI;
 
 
 
@@ -71,9 +72,7 @@ public class evaluate : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Invoke("test", 0f);
-
-            //Invoke("PrintEvaluation", 6f);
+            Invoke("PrintEvaluation", 0f);
         }
         //if()
     }
@@ -370,28 +369,14 @@ public class evaluate : MonoBehaviour
     /// </summary>
     public void PrintEvaluation()
     {
-        leaphandleft.SetActive(false);
-        leaphandright.SetActive(false);
+        //leaphandleft.SetActive(false);
+        //leaphandright.SetActive(false);
+        GameObject.Find("Canvas").GetComponent<HandControl>().InvisiHands();
 
         SpecialEffectFirst();
         Invoke("SpecialEffectSecond", 2.5f);
 
-        if (Evaluation < 0.5)
-        {
-
-        }
-        else if (Evaluation >= 0.5 && Evaluation < 0.75)
-        {
-
-        }
-        else if (Evaluation >= 0.75 && Evaluation < 0.9)
-        {
-
-        }
-        else if (Evaluation >= 0.9)
-        {
-
-        }
+        
     }
 
     private void SpecialEffectFirst()
@@ -404,6 +389,23 @@ public class evaluate : MonoBehaviour
     {
         _Pre_2.SetActive(true);
         _pre_3.SetActive(true);
+
+        if (Evaluation < 0.5)
+        {
+            GameObject.Find("ResultText").GetComponent<Text>().text = "继续努力哦~";
+        }
+        else if (Evaluation >= 0.5 && Evaluation < 0.75)
+        {
+            GameObject.Find("ResultText").GetComponent<Text>().text = "还不错";
+        }
+        else if (Evaluation >= 0.75 && Evaluation < 0.9)
+        {
+            GameObject.Find("ResultText").GetComponent<Text>().text = "好";
+        }
+        else if (Evaluation >= 0.9)
+        {
+            GameObject.Find("ResultText").GetComponent<Text>().text = "太棒啦~";
+        }
     }
 
     private void LeaveFirst()

@@ -11,6 +11,7 @@ public class LoginPanel : MonoBehaviour {
         //GameObject.Find("LeapControlledHands/leftHand").SetActive(false);
         //GameObject.Find("LeapControlledHands/rightHand").SetActive(false);
         //GameObject.Find("Canvas").GetComponent<HandControl>.
+        GameObject.Find("Canvas").GetComponent<HandControl>().InvisiHands();
     }
 	
 	// Update is called once per frame

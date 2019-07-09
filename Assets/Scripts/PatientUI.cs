@@ -155,7 +155,9 @@ public class PatientUI : MonoBehaviour, IPointerClickHandler {
 				string actID = record [8].ToString() + record [9].ToString() + record [10].ToString() + record [11].ToString() + record [12].ToString() + record [13].ToString();
 				int hand = Convert.ToInt32 (record[14].ToString());
 				string res = test.HistoryRecord (date, actID, hand);
-			} else {
+                PlayerPrefs.SetString("replayJson", res);
+                GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientReplayPanel");
+            } else {
 				Debug.Log ("只能选择一条记录，请重新选择");
 			}
 		}

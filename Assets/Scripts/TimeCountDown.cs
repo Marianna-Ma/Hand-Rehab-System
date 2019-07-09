@@ -15,7 +15,7 @@ public class TimeCountDown : MonoBehaviour {
         //GameObject.Find("rightHand").SetActive(true);
         //GameObject.Find("LeapControlledHands/leftHand").SetActive(true);
         //GameObject.Find("LeapControlledHands/rightHand").SetActive(true);
-        GameObject.Find("Canvas").GetComponent<HandControl>.ShowHands();
+        GameObject.Find("Canvas").GetComponent<HandControl>().ShowHands();
         StartCoroutine(Count());
         GameObject.Find("CountDownThreeText").GetComponent<Text>().text = "";
     }
@@ -41,6 +41,7 @@ public class TimeCountDown : MonoBehaviour {
 
     IEnumerator CountThree()
     {
+        //GameObject.Find("BackButton").SetActive(false);
         while (time2 > 0)
         {
             GameObject.Find("CountDownThreeText").GetComponent<Text>().text = time2.ToString();
@@ -68,8 +69,10 @@ public class TimeCountDown : MonoBehaviour {
 
     public void CountDownThree()
     {
+        //GameObject.Find("BackButton").SetActive(true);
         GameObject.Find("TimeCountDownText").SetActive(false);
         StartCoroutine(CountThree());
         GameObject.Find("CountDownThreeText").GetComponent<Text>().text =time2.ToString();
     }
+
 }
