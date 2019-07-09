@@ -53,6 +53,7 @@ public class PanelManager : MonoBehaviour {
         CloseAllPanels();
         page.gameObject.SetActive(true);
     }
+
     //通过名字打开面板
     public void OpenPanelByName(string name)
     {
