@@ -13,10 +13,10 @@ public class Login : MonoBehaviour, IPointerClickHandler {
 	public InputField userNameField;
 	public InputField passwordNameField;
 
-    public static string host = "119.3.231.171";                //IP地址
-    public static string port = "3306";             //端口号
+    public static string host = "119.3.231.171";        //IP地址
+    public static string port = "3306";                 //端口号
     public static string userName = "admin";            //用户名
-    public static string password = "Rehabsys@2019";            //密码
+    public static string password = "Rehabsys@2019";    //密码
     public static string databaseName = "rehabsys";     //数据库名称
 
     //封装好的数据库类
@@ -25,42 +25,17 @@ public class Login : MonoBehaviour, IPointerClickHandler {
 	private void Start() {
 //		loginMessage = GameObject.FindGameObjectWithTag("LoginMessage").GetComponent<Text>();
 		InitialAdmin ();
-        InitialStandardLibrary();
-    }
+	}
 	
 	public void OnPointerClick(PointerEventData eventData) {
-		if (eventData.pointerPress.name == "LoginButton")       //如果当前按下的按钮是注册按钮 
+		if (eventData.pointerPress.name == "loginButton")       //如果当前按下的按钮是注册按钮 
 			LoginButton();
-
 	}
 
-    public void InitialStandardLibrary()
-    {
-        mysql = new MySqlAccess(host, port, userName, password, databaseName);
-        mysql.OpenSql();
-        string query = "select ac_id, ac_pic, ac_left, ac_right from act";
-        DataSet ds = mysql.SimpleSql(query);
-        if (ds.Tables[0].Rows.Count != 0)
-        {
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-            {
-                Debug.Log(ds.Tables[0].Rows[i][0]);
-                string picName = ds.Tables[0].Rows[i][1].ToString();
-                string left_filePath = ds.Tables[0].Rows[i][2].ToString();
-                string right_fileParh = ds.Tables[0].Rows[i][3].ToString();
-                StandardActionLibrary.downloadPicture(picName);
-                StandardActionLibrary.downloadActions(left_filePath);
-                StandardActionLibrary.downloadActions(right_fileParh);
-            }
-
-        }
-        mysql.Close();
-    }
-
-    /// <summary>
-    /// 初始化管理员表（将人员表中所有的管理员添加到管理员表中）
-    /// </summary>
-    public void InitialAdmin() {
+	/// <summary>
+	/// 初始化管理员表（将人员表中所有的管理员添加到管理员表中）
+	/// </summary>
+	public void InitialAdmin() {
 		mysql = new MySqlAccess(host, port, userName, password, databaseName);
 		mysql.OpenSql ();
 		string query = "select ppl_id from ppl where ppl_role = '管理员'";
@@ -104,7 +79,8 @@ public class Login : MonoBehaviour, IPointerClickHandler {
 			if (table.Rows.Count != 0) {
 				Debug.Log ("管理员" + id + "，登录成功！");
 				PlayerPrefs.SetString ("userID", userNameField.text);
-			} else {
+                GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminStartPanel");
+            } else {
 				Debug.Log ("管理员，登录失败，没有此账号或密码错误！");
 			}
 
@@ -116,7 +92,8 @@ public class Login : MonoBehaviour, IPointerClickHandler {
 			if (table.Rows.Count != 0) {
 				Debug.Log ("医生" + id + "，登录成功！");
 				PlayerPrefs.SetString ("userID", userNameField.text);
-			} else {
+                GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorStartPanel");
+            } else {
 				Debug.Log ("医生，登录失败，没有此账号或密码错误！");
 			}
 		} else if (id [0] == '3') {
@@ -127,7 +104,8 @@ public class Login : MonoBehaviour, IPointerClickHandler {
 			if (table.Rows.Count != 0) {
 				Debug.Log ("患者" + id + "，登录成功");
 				PlayerPrefs.SetString ("userID", userNameField.text);
-			} else {
+                GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientStartPanel");
+            } else {
 				Debug.Log ("患者，登录失败，没有此账号或密码错误！");
 			}
 		} else {

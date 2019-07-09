@@ -9,15 +9,15 @@ using System;
 using System.Data;
 
 public class Doctor : MonoBehaviour {
+	
+	public static string host;				//IP地址
+	public static string port;				//端口号
+	public static string userName;			//用户名
+	public static string password;			//密码
+	public static string databaseName;		//数据库名称
 
-    public static string host = "119.3.231.171";                //IP地址
-    public static string port = "3306";             //端口号
-    public static string userName = "admin";            //用户名
-    public static string password = "Rehabsys@2019";            //密码
-    public static string databaseName = "rehabsys";     //数据库名称
-
-    //封装好的数据库类
-    MySqlAccess mysql;
+	//封装好的数据库类
+	MySqlAccess mysql;
 
 
 	public Doctor(string _host, string _port, string _userName, string _password, string _databaseName) {
@@ -165,12 +165,29 @@ public class Doctor : MonoBehaviour {
 		}
 		Debug.Log ("userID" + dcID);
 
+		string[,] res = new string[1, 1];
+		res [0, 0] = "";
 		mysql = new MySqlAccess(host, port, userName, password, databaseName);
 		mysql.OpenSql ();
 		string query = "select pt_id, pt_name, pt_sex, pt_tele from pat where pt_dcID = '" + dcID + "' and pt_ex = 1";
 		DataSet ds = mysql.QuerySet (query);
 		DataTable table = ds.Tables [0];
-		mysql.Close ();
+		//int row_num = table.Rows.Count;
+		//if (row_num != 0) {
+		//	int col_num = table.Rows [0].ItemArray.Length;
+		//	res = new string[row_num, col_num];
+		//	for (int i = 0; i < row_num; i++) {
+		//		for (int j = 0; j < col_num; j++) {
+		//			res [i, j] = table.Rows [i] [j].ToString ();
+		//		}
+		//	}
+		//} 
+		//mysql.Close ();
+		//int row = res.GetLength (0);
+		//int col = res.GetUpperBound (res.Rank - 1) + 1;
+		//for (int i = 0; i < row; i++)
+		//	for (int j = 0; j < col; j++)
+		//		Debug.Log (res [i, j]);
 		return table;
 	}
 
@@ -178,20 +195,18 @@ public class Doctor : MonoBehaviour {
 	/// <summary>
 	/// 删除患者
 	/// </summary>
-	public void DeletePatient(string[] pt_id) {
-        //public void DeletePatient() {
-        //string dcID = "200001";
-        string dcID = "";
-        if (PlayerPrefs.HasKey("userID"))
-        {
-            dcID = PlayerPrefs.GetString("userID");
-        }
-        Debug.Log("userID" + dcID);
+//	public void DeletePatient(string[] pt_id) {
+	public void DeletePatient() {
+		string dcID = "";
+		if (PlayerPrefs.HasKey ("userID")) {
+			dcID = PlayerPrefs.GetString ("userID");
+		}
+		Debug.Log ("userID" + dcID);
 
-        mysql = new MySqlAccess(host, port, userName, password, databaseName);
+		mysql = new MySqlAccess(host, port, userName, password, databaseName);
 		mysql.OpenSql ();
-		string[] ptID = pt_id;
-	//	string[] ptID = {"300002", "300003"};
+//		string[] ptID = pt_id;
+		string[] ptID = {"300002", "300003"};
 		for (int i = 0; i < ptID.Length; i++) {
 			string query = "update pat set pt_ex = 0 where pt_dcID = '" + dcID + "' and pt_id = '" + ptID [i] + "'";
 			DataSet ds = mysql.QuerySet (query);

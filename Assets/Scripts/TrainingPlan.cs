@@ -141,4 +141,16 @@ public class TrainingPlan{
         return ds;
     }
 
+    public static DataSet searchTrainingPlan(string name, string trp_ptID)
+    {
+        MySqlAccess mysql = new MySqlAccess(host, port, userName, password, databaseName);
+        mysql.OpenSql();
+        string querySql = "select trp.trp_actID,act.ac_name,trp.trp_num,trp.trp_time,trp.trp_totl from trp,act " +
+            "where trp.trp_ptID = '" + trp_ptID + "' and trp.trp_actID=act.ac_id and act.ac_name like '%" + name + "%'";
+        DataSet ds = mysql.SimpleSql(querySql);
+        mysql.Close();
+        return ds;
+    }
+
+
 }

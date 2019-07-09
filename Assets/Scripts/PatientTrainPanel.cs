@@ -13,4 +13,9 @@ public class PatientTrainPanel : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void ClickTestButton()
+    {
+        
+    }
 }

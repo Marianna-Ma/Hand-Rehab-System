@@ -9,15 +9,15 @@ using System;
 using System.Data;
 
 public class Admin : MonoBehaviour {
+	
+	public static string host;				//IP地址
+	public static string port;				//端口号
+	public static string userName;			//用户名
+	public static string password;			//密码
+	public static string databaseName;		//数据库名称
 
-    public static string host = "119.3.231.171";                //IP地址
-    public static string port = "3306";             //端口号
-    public static string userName = "admin";            //用户名
-    public static string password = "Rehabsys@2019";            //密码
-    public static string databaseName = "rehabsys";     //数据库名称
-
-    //封装好的数据库类
-    MySqlAccess mysql;
+	//封装好的数据库类
+	MySqlAccess mysql;
 
 
 	public Admin(string _host, string _port, string _userName, string _password, string _databaseName) {
@@ -131,14 +131,31 @@ public class Admin : MonoBehaviour {
 	/// <summary>
 	/// 查询所有医生，返回医生编号、姓名、性别、职称、电话
 	/// </summary>
-	public DataTable QueryDoctor() {
+	public string[,] QueryDoctor() {
 		mysql = new MySqlAccess(host, port, userName, password, databaseName);
 		mysql.OpenSql ();
+		string[,] res = new string[1, 1];
+		res [0, 0] = "";
 		string query = "select dc_id, dc_name, dc_sex, dc_pro, dc_tele from doc where dc_ex = 1";
 		DataSet ds = mysql.QuerySet (query);
 		DataTable table = ds.Tables [0];
+		int row_num = table.Rows.Count;
+		if (row_num != 0) {
+			int col_num = table.Rows [0].ItemArray.Length;
+			res = new string[row_num, col_num];
+			for (int i = 0; i < row_num; i++) {
+				for (int j = 0; j < col_num; j++) {
+					res [i, j] = table.Rows [i] [j].ToString ();
+				}
+			}
+		} 
 		mysql.Close ();
-		return table;
+		int row = res.GetLength (0);
+		int col = res.GetUpperBound (res.Rank - 1) + 1;
+		for (int i = 0; i < row; i++)
+			for (int j = 0; j < col; j++)
+				Debug.Log (res [i, j]);
+		return res;
 	}
 
 

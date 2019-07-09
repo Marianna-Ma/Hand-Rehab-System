@@ -21,13 +21,8 @@ public class LoginPanel : MonoBehaviour {
     {
         //医生验证函数
         //病人验证函数
-        if (GameObject.Find("InputID").GetComponent<InputField>().text == "1111"&& GameObject.Find("InputPassword").GetComponent<InputField>().text == "1111")
-        {
+
             GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorStartPanel");
-        }
-        else if(GameObject.Find("InputID").GetComponent<InputField>().text == "2222" && GameObject.Find("InputPassword").GetComponent<InputField>().text == "2222")
-        {
             GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientStartPanel");
-        }
     }
 }

@@ -29,7 +29,7 @@ public class AdminStartPanel : MonoBehaviour {
     //跳转到训练计划管理界面
     public void ClickAdminTrainPlanButton()
     {
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("");
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminChangeStandardAcitonPanel");
     }
 
     //跳转到查看病人信息界面
