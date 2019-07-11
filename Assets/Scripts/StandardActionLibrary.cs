@@ -173,7 +173,7 @@ public class StandardActionLibrary : MonoBehaviour {
         res = new string[1, 1];
         mysql.OpenSql();
         Debug.Log("database name: " + databaseName);
-        string querySql = "select ac_id, ac_name, ac_pic from act";
+        string querySql = "select ac_id, ac_name, ac_pic from act where ac_ex = 1";
         //string querySql = "select trp_ptID from trp";
         DataSet ds = mysql.SimpleSql(querySql);
         int row_num = ds.Tables[0].Rows.Count;
@@ -225,19 +225,61 @@ public class StandardActionLibrary : MonoBehaviour {
     }
 
     //删
-    public string[] deleteStandardAction(string hand_id)
+    public int deleteStandardActions(List<string> id_list)
     {
         mysql = new MySqlAccess(host, port, userName, password, databaseName);
-        string[] res = new string[1];
-        res[0] = "null";
         mysql.OpenSql();
-        string querySql = "select * from act where ac_id = '" + hand_id + "'";
-        DataSet ds = mysql.SimpleSql(querySql);
-        if(ds.Tables[0].Rows.Count != 0)
+        foreach(string id in id_list)
         {
-            res = new string[2];
-            res[0] = ds.Tables[0].Rows[0][0].ToString();
-            res[1] = ds.Tables[0].Rows[0][1].ToString();
+            string querySql = "select * from act where ac_id = '" + id + "'";
+            DataSet ds = mysql.SimpleSql(querySql);
+            if (ds.Tables[0].Rows.Count == 0)
+            {
+                mysql.Close();
+                return 1;
+            }
+        }
+        foreach(string id in id_list)
+        {
+            string querySql = "select * from rec where rec_actID = '" + id + "'";
+            DataSet ds = mysql.SimpleSql(querySql);
+            if(ds.Tables[0].Rows.Count != 0)
+            {
+                deleteStandardAction(id, 1);
+            }
+            else
+            {
+                querySql = "select * from trp where trp_actID = '" + id + "'";
+                ds = mysql.SimpleSql(querySql);
+                if (ds.Tables[0].Rows.Count != 0)
+                {
+                    deleteStandardAction(id, 1);
+                }
+                else
+                {
+                    deleteStandardAction(id, 0);
+                }
+            }
+            
+            
+        }
+        mysql.Close();
+        return 0;
+    }
+
+    public void deleteStandardAction(string hand_id, int flag)
+    {
+        mysql = new MySqlAccess(host, port, userName, password, databaseName);
+        mysql.OpenSql();
+        if(flag == 1)
+        {
+            string querySql = "update act set ac_ex = 0 where ac_id = '" + hand_id + "'";
+            mysql.SimpleSql(querySql);
+        }
+        else if(flag == 0)
+        {
+            string querySql = "select * from act where ac_id = '" + hand_id + "'";
+            DataSet ds = mysql.SimpleSql(querySql);
             string picName = ds.Tables[0].Rows[0][2].ToString();
             string leftData = ds.Tables[0].Rows[0][3].ToString();
             string rightData = ds.Tables[0].Rows[0][4].ToString();
@@ -251,7 +293,7 @@ public class StandardActionLibrary : MonoBehaviour {
         }
         
         mysql.Close();
-        return res; 
+
     }
 
     public void showDeleteInfo(string[] res)

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System;
+using System.Runtime.InteropServices;
 
 public class CheckStdActionLibraryPanel : MonoBehaviour, IPointerClickHandler{
 
@@ -31,11 +33,14 @@ public class CheckStdActionLibraryPanel : MonoBehaviour, IPointerClickHandler{
         {
             GameObject.Find("CheckStdActionLibraryPanel").GetComponent<CreateStdActionTable>().getSelectActList(selectActList);
             Debug.Log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-            foreach (string id in selectActList)
+            int able = stdlib.deleteStandardActions(selectActList);
+            if(able == 1)
             {
-                Debug.Log(id);
-                //stdlib.deleteStandardAction(id);
-
+                Messagebox.MessageBox(IntPtr.Zero, "有无效选中动作！", "失败", 0);
+            }
+            else
+            {
+                Messagebox.MessageBox(IntPtr.Zero, "删除标准动作成功！", "成功", 0);
             }
         }
         if (eventData.pointerPress.name == "BackButton")
