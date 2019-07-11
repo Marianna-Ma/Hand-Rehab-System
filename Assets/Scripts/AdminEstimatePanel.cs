@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreateHistoryRecordTable1 : MonoBehaviour {
+public class AdminEstimatePanel : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -13,4 +13,5 @@ public class CreateHistoryRecordTable1 : MonoBehaviour {
 	void Update () {
 		
 	}
+
 }

@@ -31,6 +31,7 @@ public class StandardActionLibrary : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        hd = new GameObject();
         mysql = new MySqlAccess(host, port, userName, password, databaseName);
         //string next_id = getActionId();
         //Debug.Log("neext iiiid: " + next_id);
@@ -268,6 +269,15 @@ public class StandardActionLibrary : MonoBehaviour {
         return 0;
     }
 
+    public void deleteLocJson(string filePath)
+    {
+        string dirPath = Application.dataPath + "/StandardActionLibrary/" + filePath;
+        if (File.Exists(dirPath))
+        {
+            File.Delete(dirPath);
+        }
+    }
+
     public void deleteStandardAction(string hand_id, int flag)
     {
         mysql = new MySqlAccess(host, port, userName, password, databaseName);
@@ -287,6 +297,8 @@ public class StandardActionLibrary : MonoBehaviour {
             querySql = "delete from act where ac_id = '" + hand_id + "'";
             Debug.Log(querySql);
             deletePicture(picName);
+            deleteLocJson(leftData);
+            deleteLocJson(rightData);
             deleteActions(leftData);
             deleteActions(rightData);
             mysql.SimpleSql(querySql);
@@ -347,7 +359,7 @@ public class StandardActionLibrary : MonoBehaviour {
     {
         if(flag_S == 1 && allowSaveData)
         {
-            hd = new GameObject();
+            
             hd.AddComponent<SaveHandData>();
             handData = (SaveHandData)hd.GetComponent(typeof(SaveHandData));
             handData.Init(200, path);
@@ -360,6 +372,10 @@ public class StandardActionLibrary : MonoBehaviour {
         {
             Debug.Log("save completed detected!");
             flag_S = 0;
+            Debug.Log("flag: " + flag_S);
+            Messagebox.MessageBox(IntPtr.Zero, "录制动作成功！", "成功", 0);
+            Destroy(hd.GetComponent<SaveHandData>());
+            GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AddStdActionLibraryPanel");
 
         }
 

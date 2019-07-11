@@ -11,6 +11,8 @@ public class CheckStdActionLibraryPanel : MonoBehaviour, IPointerClickHandler{
     StandardActionLibrary stdlib = new StandardActionLibrary();
     List<string> selectActList = new List<string>();
 
+    public GameObject SmallPanel;
+
     // Use this for initialization
     void Start () {
 
@@ -29,20 +31,7 @@ public class CheckStdActionLibraryPanel : MonoBehaviour, IPointerClickHandler{
 
             GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AddStdActionLibraryPanel");
         }
-        if (eventData.pointerPress.name == "DeleteActionButton")
-        {
-            GameObject.Find("CheckStdActionLibraryPanel").GetComponent<CreateStdActionTable>().getSelectActList(selectActList);
-            Debug.Log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-            int able = stdlib.deleteStandardActions(selectActList);
-            if(able == 1)
-            {
-                Messagebox.MessageBox(IntPtr.Zero, "有无效选中动作！", "失败", 0);
-            }
-            else
-            {
-                Messagebox.MessageBox(IntPtr.Zero, "删除标准动作成功！", "成功", 0);
-            }
-        }
+        
         if (eventData.pointerPress.name == "BackButton")
         {
             //跳转到开始界面
@@ -54,6 +43,14 @@ public class CheckStdActionLibraryPanel : MonoBehaviour, IPointerClickHandler{
 
     // Update is called once per frame
     void Update () {
-		
-	}
+
+    }
+
+    public void ClickDeleteActionButton()
+    {
+        SmallPanel.SetActive(true);
+        GameObject.Find("AddActionButton").GetComponent<Button>().interactable = false;
+        GameObject.Find("DeleteActionButton").GetComponent<Button>().interactable = false;
+        GameObject.Find("BackButton").GetComponent<Button>().interactable = false;
+    }
 }

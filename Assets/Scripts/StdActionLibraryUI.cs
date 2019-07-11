@@ -56,11 +56,25 @@ public class StdActionLibraryUI : MonoBehaviour, IPointerClickHandler {
         {
             Debug.Log("动作名： " + actionNameInput.text.ToString());
             Debug.Log("动作图片路径" + actionPicPath.text.ToString());
-            StandardActionLibrary stdlibrary = new StandardActionLibrary();
-            stdlibrary.addStandardAction(action_id, actionNameInput.text.ToString(), actionPicPath.text.ToString());
+            
+            string dirPath = Application.dataPath + "/StandardActionLibrary/";
+            string left_data_path = dirPath + action_id + "0.json";
+            string right_data_path = dirPath + action_id + "1.json";
+            if(File.Exists(left_data_path) && File.Exists(right_data_path))
+            {
+                StandardActionLibrary stdlibrary = new StandardActionLibrary();
+                stdlibrary.addStandardAction(action_id, actionNameInput.text.ToString(), actionPicPath.text.ToString());
+                Messagebox.MessageBox(IntPtr.Zero, "添加标准动作成功！", "成功", 0);
+                GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminEstimatePanel");
+            }
+            else
+            {
+                Messagebox.MessageBox(IntPtr.Zero, "请确定左手和右手动作均录制完毕！", "失败", 0);
+            }
 
-            Messagebox.MessageBox(IntPtr.Zero, "添加标准动作成功！", "成功", 0);
-            GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("");
+            //StandardActionLibrary stdlibrary = new StandardActionLibrary();
+            //stdlibrary.addStandardAction(action_id, actionNameInput.text.ToString(), actionPicPath.text.ToString());  
+            
         }
     }
 
@@ -68,6 +82,8 @@ public class StdActionLibraryUI : MonoBehaviour, IPointerClickHandler {
     {
         PlayerPrefs.SetString("handtype", "0");
         GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminChangeStandardAcitonPanel");
+        //GameObject.Find("ChangeCountDownText").SetActive(true);
+        GameObject.Find("ChangeCountDownText").GetComponent<Text>().text = "按下按钮之后，按'S'键开始录制！";
     }
 
     public void ClickTranscribeButton_Right()
@@ -75,6 +91,8 @@ public class StdActionLibraryUI : MonoBehaviour, IPointerClickHandler {
         PlayerPrefs.SetString("handtype", "1");
             
         GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminChangeStandardAcitonPanel");
+        //GameObject.Find("ChangeCountDownText").SetActive(true);
+        GameObject.Find("ChangeCountDownText").GetComponent<Text>().text = "按下按钮之后，按'S'键开始录制！";
     }
 
     // Update is called once per frame

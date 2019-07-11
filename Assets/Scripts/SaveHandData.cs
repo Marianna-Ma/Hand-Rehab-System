@@ -47,6 +47,8 @@ public class SaveHandData : MonoBehaviour {
         this.delta = Delta;
         this.frameNum = FrameNum;
         this.savedDataPath = Path;
+        this.frame_index = 0;
+
     } 
 
     public bool IsSaveCompleted()
