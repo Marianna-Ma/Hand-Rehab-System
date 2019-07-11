@@ -71,7 +71,7 @@ public class figureEstimate : MonoBehaviour, IPointerClickHandler {
 			mysql.Close ();
             Messagebox.MessageBox(IntPtr.Zero, "添加评测方式成功！", "成功", 0);
             GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("CheckStdActionLibraryPanel");
-            DistancePanel.GetComponent<CreateDocPanel>().Start();
+            DistancePanel.GetComponent<CreateStdActionTable>().Start();
         }
 	}
 }
