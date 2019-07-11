@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Data;
+using UnityEngine.UI;
 
 public class AdminDeleteDoctorPanel : MonoBehaviour {
 
-    public Admin test;
+    public static string host = "119.3.231.171";        //IP地址
+    public static string port = "3306";                 //端口号
+    public static string userName = "admin";            //用户名
+    public static string password = "Rehabsys@2019";    //密码
+    public static string databaseName = "rehabsys";		//数据库名称
+
+    //public Admin test;
     public GameObject SmallPanel;
 
     // Use this for initialization
@@ -20,12 +27,14 @@ public class AdminDeleteDoctorPanel : MonoBehaviour {
 	}
 
     public void ClickDeleteDoctorButton()
-    { 
+    {
+        
         List<string> selectActList = new List<string>();
         //GameObject obj = GameObject.Find("Canvas/AdminCheckDoctorPanel");
         //CreateDocPanel panel = (CreateDocPanel)obj.GetComponent(typeof(CreateDocPanel));
         GameObject.Find("Canvas/AdminCheckDoctorPanel").GetComponent<CreateDocPanel>().getSelectActList(selectActList);
 
+        Admin test = new Admin(host, port, userName, password, databaseName);
         int flag = test.DeleteDoctor(selectActList);
         if (flag == 1)
             Messagebox.MessageBox(IntPtr.Zero, "删除医生失败！", "失败", 0);
@@ -33,11 +42,18 @@ public class AdminDeleteDoctorPanel : MonoBehaviour {
             Messagebox.MessageBox(IntPtr.Zero, "删除医生成功！", "成功", 0);
 
         SmallPanel.SetActive(false);
+        GameObject.Find("AddDoctorButton").GetComponent<Button>().interactable = true;
+        GameObject.Find("DeleteDoctorButton").GetComponent<Button>().interactable = true;
+        GameObject.Find("BackButton").GetComponent<Button>().interactable = true;
         GameObject.Find("AdminCheckDoctorPanel").GetComponent<CreateDocPanel>().Start();
     }
 
     public void ClickBackButton()
     {
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminStartPanel");
+        SmallPanel.SetActive(false);
+        GameObject.Find("AddDoctorButton").GetComponent<Button>().interactable = true;
+        GameObject.Find("DeleteDoctorButton").GetComponent<Button>().interactable = true;
+        GameObject.Find("BackButton").GetComponent<Button>().interactable = true;
+        //GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminStartPanel");
     }
 }
