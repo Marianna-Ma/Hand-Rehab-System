@@ -22,7 +22,7 @@ public class PatientUI : MonoBehaviour, IPointerClickHandler {
 	public InputField pt_secondPswdField;
 	// 修改信息 面板的输入框
 	public InputField ptNameField;
-	public InputField ptSexField;
+	//public InputField ptSexField;
 	public InputField ptTeleField;
 	// 查看历史记录
 	public Text startDateText;
@@ -49,10 +49,41 @@ public class PatientUI : MonoBehaviour, IPointerClickHandler {
 	}
 
 	public void OnPointerClick(PointerEventData eventData) {
-		if (eventData.pointerPress.name == "updatePswdButton")	//如果当前按下的按钮是修改密码按钮
-			test.UpdatePassword (pt_firstPswdField.text.ToString(), pt_secondPswdField.text.ToString());
-		if (eventData.pointerPress.name == "changeInfoButton")
-			test.ChangeInfo (ptNameField.text.ToString(), ptSexField.text.ToString(), ptTeleField.text.ToString());
+		if (eventData.pointerPress.name == "updatePswdButton")  //如果当前按下的按钮是修改密码按钮
+		{   
+			int flag = test.UpdatePassword(pt_firstPswdField.text.ToString(), pt_secondPswdField.text.ToString());
+			if (flag == 1)
+				Messagebox.MessageBox(IntPtr.Zero, "密码长度应为6~20个字符！", "失败", 0);
+			else if (flag == 2)
+				Messagebox.MessageBox(IntPtr.Zero, "新密码不可与原密码相同！", "失败", 0);
+			else if (flag == 3)
+				Messagebox.MessageBox(IntPtr.Zero, "两次密码不一致！", "失败", 0);
+			else {
+				Messagebox.MessageBox(IntPtr.Zero, "修改密码成功！", "成功", 0);
+				pt_firstPswdField.text = "";
+				pt_secondPswdField.text = "";
+				GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientStartPanel");
+			}
+			pt_firstPswdField.text = "";
+			pt_secondPswdField.text = "";
+		}
+		if (eventData.pointerPress.name == "changeInfoButton") {
+			Dropdown select_sex_item = GameObject.Find("Canvas/PatientChangeInfoPanel/SexDropDown").GetComponent<Dropdown>();
+			string select_sex = select_sex_item.options[select_sex_item.value].text;
+			//int select_hand = select_hand_item.value;
+			int flag = test.ChangeInfo(ptNameField.text.ToString(), select_sex, ptTeleField.text.ToString());
+			if (flag == 1) {
+				Messagebox.MessageBox(IntPtr.Zero, "修改个人信息失败！", "失败", 0);
+				ptNameField.text = "";
+				ptTeleField.text = "";
+			}
+			else {
+				Messagebox.MessageBox(IntPtr.Zero, "修改个人信息成功！", "成功", 0);
+				ptNameField.text = "";
+				ptTeleField.text = "";
+				GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientStartPanel");
+			}
+		}
 		if (eventData.pointerPress.name == "selectDateButton") {
 			string startDate = startDateText.text.ToString ();
 			string endDate = endDateText.text.ToString ();

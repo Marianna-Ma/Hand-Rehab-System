@@ -25,11 +25,35 @@ public class Login : MonoBehaviour, IPointerClickHandler {
 	private void Start() {
 //		loginMessage = GameObject.FindGameObjectWithTag("LoginMessage").GetComponent<Text>();
 		InitialAdmin ();
+		InitialStandardLibrary ();
 	}
 	
 	public void OnPointerClick(PointerEventData eventData) {
 		if (eventData.pointerPress.name == "loginButton")       //如果当前按下的按钮是注册按钮 
 			LoginButton();
+	}
+
+	public void InitialStandardLibrary()
+	{
+		mysql = new MySqlAccess(host, port, userName, password, databaseName);
+		mysql.OpenSql();
+		string query = "select ac_id, ac_pic, ac_left, ac_right from act";
+		DataSet ds = mysql.SimpleSql(query);
+		if (ds.Tables[0].Rows.Count != 0)
+		{
+			for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+			{
+				Debug.Log(ds.Tables[0].Rows[i][0]);
+				string picName = ds.Tables[0].Rows[i][1].ToString();
+				string left_filePath = ds.Tables[0].Rows[i][2].ToString();
+				string right_fileParh = ds.Tables[0].Rows[i][3].ToString();
+				StandardActionLibrary.downloadPicture(picName);
+				StandardActionLibrary.downloadActions(left_filePath);
+				StandardActionLibrary.downloadActions(right_fileParh);
+			}
+
+		}
+		mysql.Close();
 	}
 
 	/// <summary>

@@ -162,6 +162,7 @@ public class StandardActionLibrary : MonoBehaviour {
         //Debug.Log("next_pic: " + next_pic + " next left: " + next_left + " next right: " + next_right);
         mysql.SimpleSql(querySql);
         mysql.Close();
+		downloadPicture (next_pic);
         
     }
 
