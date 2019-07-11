@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class AdminChangeStandardActionPanel : MonoBehaviour {
     public int time = 3;
@@ -19,28 +20,14 @@ public class AdminChangeStandardActionPanel : MonoBehaviour {
     private void OnEnable()
     {
         //CountDownThree();
+        //GameObject.Find("ChangeCountDownText").SetActive(true);
+        //GameObject.Find("ChangeCountDownText").GetComponent<Text>().text = "按下按钮之后，按'S'键开始录制！";
     }
 
     public void ClickTranscribeButton()
     {
-        CountDownThree();
-    }
-
-    public void CountDownThree()
-    {
-        StartCoroutine(CountThree());
-        GameObject.Find("ChangeCountDownText").GetComponent<Text>().text = time.ToString();
-    }
-
-    IEnumerator CountThree()
-    {
-        while (time > 0)
-        {
-            GameObject.Find("ChangeCountDownText").GetComponent<Text>().text = time.ToString();
-            yield return new WaitForSeconds(1);
-            time--;
-        }
-        GameObject.Find("ChangeCountDownText").GetComponent<Text>().text = "开始记录标准动作";
+        //Messagebox.MessageBox(IntPtr.Zero, "按'S'键开始录制！", "注意", 0);
+        GameObject.Find("ChangeCountDownText").GetComponent<Text>().text = "";
         //记录标准动作
         string hand_type = PlayerPrefs.GetString("handtype");
         string act_id = PlayerPrefs.GetString("newActionID");
@@ -49,6 +36,6 @@ public class AdminChangeStandardActionPanel : MonoBehaviour {
         obj.AddComponent<StandardActionLibrary>();
         StandardActionLibrary stdlibrary = (StandardActionLibrary)obj.GetComponent(typeof(StandardActionLibrary));
         stdlibrary.saveStandardAction(act_id, hand_type);
-
     }
+
 }

@@ -7,6 +7,7 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System;
 using System.Data;
+using System;
 
 public class figureEstimate : MonoBehaviour, IPointerClickHandler {
 	public static string host = "119.3.231.171";		//IP地址
@@ -18,6 +19,8 @@ public class figureEstimate : MonoBehaviour, IPointerClickHandler {
 	//封装好的数据库类
 	MySqlAccess mysql;
 
+    public GameObject DistancePanel;
+
 	public void OnPointerClick(PointerEventData eventData) {
 		if (eventData.pointerPress.name == "confirmButton") {
 			string[] group1 = { "fingerStraight", "fingerBend", "fingerKnead", "fingerOpening" };
@@ -25,7 +28,7 @@ public class figureEstimate : MonoBehaviour, IPointerClickHandler {
 			string[] group3 = { "ThumbIndexToggle", "ThumbMiddleToggle", "ThumbRingToggle", "ThumbPinkyToggle", "IndexMiddleToggle", "IndexRingToggle", "IndexPinkyToggle", "MiddleRingToggle", "MiddlePinkyToggle", "RingPinkyToggle" };
 			string[] group4 = { "ThumbIndexToggle", "IndexMiddleToggle", "MiddleRingToggle", "RingPinkyToggle"};
 			string res = "";
-			string path = "DoctorEstimatePanel/";
+			string path = "AdminEstimatePanel/";
 			for (int i = 0; i < 4; i++) {
 				string path1 = path + group1 [i] + "/ToggleGroup/";
 				if (i == 0 || i == 1) {
@@ -53,7 +56,7 @@ public class figureEstimate : MonoBehaviour, IPointerClickHandler {
 			}
 			Debug.Log ("res   " + res);
 
-			PlayerPrefs.SetString ("newActionID", "400005");
+			//PlayerPrefs.SetString ("newActionID", "400005");
 			string newActionID = "";
 			if (PlayerPrefs.HasKey("newActionID")) {
 				newActionID = PlayerPrefs.GetString ("newActionID");
@@ -66,6 +69,9 @@ public class figureEstimate : MonoBehaviour, IPointerClickHandler {
 			mysql.QuerySet (query);
 			Debug.Log (query);
 			mysql.Close ();
-		}
+            Messagebox.MessageBox(IntPtr.Zero, "添加评测方式成功！", "成功", 0);
+            GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("CheckStdActionLibraryPanel");
+            DistancePanel.GetComponent<CreateDocPanel>().Start();
+        }
 	}
 }
