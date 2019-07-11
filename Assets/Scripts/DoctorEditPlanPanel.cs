@@ -18,14 +18,14 @@ public class DoctorEditPlanPanel : MonoBehaviour, IPointerClickHandler{
     string select_span = "";
 
     // Use this for initialization
-    void Start () {
-        PlayerPrefs.SetString("selectPatientID", "300001");
-        PlayerPrefs.SetString("selectStdActionID", "400003");
-        PlayerPrefs.SetString("selectStdActionName", "拇指伸展");
-        PlayerPrefs.SetInt("selectPlanHand", 1);
-        PlayerPrefs.SetString("selectPlanDays", "9");
-        PlayerPrefs.SetString("selectPlanTimes", "2");
-        PlayerPrefs.SetString("selectPlanSpan", "20");
+    public void Start () {
+        //PlayerPrefs.SetString("selectPatientID", "300001");
+        //PlayerPrefs.SetString("selectStdActionID", "400003");
+        //PlayerPrefs.SetString("selectStdActionName", "拇指伸展");
+        //PlayerPrefs.SetInt("selectPlanHand", 1);
+        //PlayerPrefs.SetString("selectPlanDays", "9");
+        //PlayerPrefs.SetString("selectPlanTimes", "2");
+        //PlayerPrefs.SetString("selectPlanSpan", "20");
         select_act_id = PlayerPrefs.GetString("selectStdActionID");
         select_act_name = PlayerPrefs.GetString("selectStdActionName");
         select_hand = PlayerPrefs.GetInt("selectPlanHand");
@@ -33,7 +33,7 @@ public class DoctorEditPlanPanel : MonoBehaviour, IPointerClickHandler{
         select_times = PlayerPrefs.GetString("selectPlanTimes");
         select_span = PlayerPrefs.GetString("selectPlanSpan");
         action_id = PlayerPrefs.GetString("selectPatientID");
-
+        Debug.Log("selectStdActionID1:" + select_act_id);
         //设置初始值
         GameObject.Find("Canvas/DoctorEditPlanPanel/SetPlanIDText").GetComponent<Text>().text = select_act_id;
         GameObject.Find("Canvas/DoctorEditPlanPanel/SetPlanNameText").GetComponent<Text>().text = select_act_name;
@@ -58,7 +58,13 @@ public class DoctorEditPlanPanel : MonoBehaviour, IPointerClickHandler{
             string set_times = setTimes.text.ToString();
             string set_span = setSpan.text.ToString();
             Debug.Log(select_hand + " " + set_day + " " + set_times + " " + set_span);
-            //TrainingPlan.changeTrainingPlan(action_id, select_act_id, select_hand, int.Parse(set_times), int.Parse(set_span), int.Parse(set_day));
+            Debug.Log("selectStdActionID2:" + select_act_id);
+            TrainingPlan.changeTrainingPlan(action_id, select_act_id, select_hand, int.Parse(set_times), int.Parse(set_span), int.Parse(set_day));
+
+            GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPlanPanelNew");
+            GameObject obj = GameObject.Find("Canvas/DoctorCheckPlanPanelNew");
+            CreatePlanTable panel = (CreatePlanTable)obj.GetComponent(typeof(CreatePlanTable));
+            panel.Start();
         }
 
     }

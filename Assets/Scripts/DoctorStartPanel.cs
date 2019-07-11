@@ -14,11 +14,16 @@ public class DoctorStartPanel : MonoBehaviour {
 	void Update () {
 		
 	}
-    
+
+    //跳转到修改密码界面
+    public void ClickUpdatePswdButton()
+    {
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorUpdatePasswordPanel");
+    }
     //跳转到注册病人界面
     public void ClickPatientButton()
     {
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorPatientPanel");
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPatientPanelNew");
     }
 
     //跳转到修改个人信息界面
@@ -27,7 +32,7 @@ public class DoctorStartPanel : MonoBehaviour {
         GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorChangeInfoPanel");
     }
 
-    //病人管理窗口
+    //训练结果窗口
     public void ClickCheckButton()
     {
         GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPatientPanelNew");
@@ -37,6 +42,6 @@ public class DoctorStartPanel : MonoBehaviour {
     public void ClickQuitButton()
     {
         PlayerPrefs.DeleteAll();
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPreviousPanel();
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("LoginPanel");
     }
 }

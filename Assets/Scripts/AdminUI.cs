@@ -25,7 +25,7 @@ public class AdminUI : MonoBehaviour, IPointerClickHandler {
 	public Text endDateText;
 	public Text noRecord;
 	public GameObject historyRecordsPrefab;//表头预设
-	public List<string> selectRecordList = new List<string>(); // 保存哪些toggle被选择
+    public List<string> selectRecordList = new List<string>(); // 保存哪些toggle被选择
 
 	public static string host = "119.3.231.171";		//IP地址
 	public static string port = "3306";					//端口号
@@ -56,10 +56,29 @@ public class AdminUI : MonoBehaviour, IPointerClickHandler {
                 Messagebox.MessageBox(IntPtr.Zero, "医生账号已存在！", "失败", 0);
             else
                 Messagebox.MessageBox(IntPtr.Zero, "添加医生成功！", "成功", 0);
+            GameObject obj = GameObject.Find("Canvas/AdminCheckDoctorPanel");
+            CreateDocPanel panel = (CreateDocPanel)obj.GetComponent(typeof(CreateDocPanel));
+            panel.Start();
         }
-			 
-		if (eventData.pointerPress.name == "deleteDoctorButton")	//如果当前按下的按钮是删除患者按钮
-			test.DeleteDoctor();
+
+        if (eventData.pointerPress.name == "deleteDoctorButton")//如果当前按下的按钮是删除患者按钮
+        {
+            List<string> selectActList = new List<string>();
+            //GameObject obj = GameObject.Find("Canvas/AdminCheckDoctorPanel");
+            //CreateDocPanel panel = (CreateDocPanel)obj.GetComponent(typeof(CreateDocPanel));
+            GameObject.Find("Canvas/AdminCheckDoctorPanel").GetComponent<CreateDocPanel>().getSelectActList(selectActList);
+
+            int flag = test.DeleteDoctor(selectActList);
+            if (flag == 1)
+                Messagebox.MessageBox(IntPtr.Zero, "删除医生失败！", "失败", 0);
+            else
+                Messagebox.MessageBox(IntPtr.Zero, "删除医生成功！", "成功", 0);
+
+
+            GameObject.Find("AdminCheckDoctorPanel").GetComponent<CreateDocPanel>().Start();
+
+            
+        }
 
 		if (eventData.pointerPress.name == "selectDateButton") {
 			string startDate = startDateText.text.ToString ();

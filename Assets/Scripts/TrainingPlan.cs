@@ -86,7 +86,7 @@ public class TrainingPlan{
         DataSet ds = mysql.SimpleSql(querySql);
         if (ds.Tables[0].Rows.Count != 0)
         {
-            querySql = "update trp set trp_num='"+ trp_num + "' and trp_time='"+ trp_time + "' and trp_totl='"+ trp_totl + 
+            querySql = "update trp set trp_num='"+ trp_num + "',trp_time='"+ trp_time + "',trp_totl='"+ trp_totl + 
                 "' where trp_ptID = '" + trp_ptID + "' and trp_actID = '" + trp_actID + "' and trp_hand = '" + trp_hand + "'";
             Debug.Log(querySql);
             mysql.SimpleSql(querySql);
@@ -146,8 +146,12 @@ public class TrainingPlan{
     {
         MySqlAccess mysql = new MySqlAccess(host, port, userName, password, databaseName);
         mysql.OpenSql();
-        string querySql = "select trp.trp_actID,act.ac_name,trp.trp_num,trp.trp_time,trp.trp_totl from trp,act " +
-            "where trp.trp_ptID = '" + trp_ptID + "' and trp.trp_actID=act.ac_id and act.ac_name like '%"+name+"%'";
+        string querySql;
+        if (name != "")
+            querySql = "select trp_ptID,trp_actID,ac_name,trp_hand,trp_num,trp_time,trp_totl from trp,act " +
+            "where trp_ptID = '" + trp_ptID + "' and trp_actID=ac_id and ac_name like '%" + name + "%'";
+        else querySql = "select trp_ptID,trp_actID,ac_name,trp_hand,trp_num,trp_time,trp_totl from trp,act " +
+            "where trp_ptID = '" + trp_ptID + "' and trp_actID=ac_id";
         DataSet ds = mysql.SimpleSql(querySql);
         mysql.Close();
         return ds;

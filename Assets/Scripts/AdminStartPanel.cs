@@ -14,6 +14,11 @@ public class AdminStartPanel : MonoBehaviour {
 		
 	}
 
+    //修改密码界面
+    public void ClickUpdatePswdButton()
+    {
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminUpdatePasswordPanel");
+    }
     //跳转到修改个人信息界面
     public void ClickAdminChangeInfoButton()
     {
@@ -23,7 +28,10 @@ public class AdminStartPanel : MonoBehaviour {
     //跳转到医生管理界面
     public void ClickAdminDoctorButton()
     {
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("");
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminCheckDoctorPanel");
+        GameObject obj = GameObject.Find("Canvas/AdminCheckDoctorPanel");
+        CreateDocPanel panel = (CreateDocPanel)obj.GetComponent(typeof(CreateDocPanel));
+        panel.Start();
     }
 
     //跳转到训练计划管理界面
@@ -45,7 +53,7 @@ public class AdminStartPanel : MonoBehaviour {
     {
         //此处是否要注销player？
         PlayerPrefs.DeleteAll();
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPreviousPanel();
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("LoginPanel");
     }
 
 }

@@ -108,7 +108,6 @@ public class Doctor : MonoBehaviour {
 		mysql.OpenSql ();
 		string query = "update doc set dc_name = '" + dcName + "', dc_sex = '" + dcSex + "', dc_pro = '" + dcPro + "', dc_tele = '" + dcTele + "' where dc_id = '" + dcID + "'";
 		DataSet ds = mysql.QuerySet (query);
-		DataTable table = ds.Tables [0];
 
 		mysql.Close ();
 	}

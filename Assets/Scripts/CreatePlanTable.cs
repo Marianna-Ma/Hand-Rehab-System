@@ -19,6 +19,7 @@ public class PlanButtonInfo
     public string id;
     public string actName;
     public int hand;
+    public string day, time, span;
     public GameObject obj;
 }
 
@@ -29,6 +30,7 @@ public class CreatePlanTable : MonoBehaviour {
     public List<PlanToggleInfo> selectActList = new List<PlanToggleInfo>();
     public GameObject table;
     public bool clicked=false;
+    public InputField nameInput;
 
     void Awake()
     {
@@ -45,8 +47,8 @@ public class CreatePlanTable : MonoBehaviour {
                 Destroy(t.gameObject);//删除之前的内容
             }
         }
-
-        currentTP = TrainingPlan.findOnesTrainingPlan("300001"); //TODO：获得病人编号
+        string ID = PlayerPrefs.GetString("selectPatientID");
+        currentTP = TrainingPlan.findOnesTrainingPlan(ID); //TODO：获得病人编号
        
         if (currentTP.Tables[0].Rows.Count > 0)
         {
@@ -69,7 +71,8 @@ public class CreatePlanTable : MonoBehaviour {
                     Destroy(t.gameObject);//删除之前的内容
                 }
             }
-            //currentTP = TrainingPlan.searchTrainingPlan("伸", "300001");
+
+            currentTP = TrainingPlan.searchTrainingPlan(nameInput.text.ToString(), PlayerPrefs.GetString("selectPatientID"));
             if (currentTP.Tables[0].Rows.Count > 0)
             {
                 CreateTable(currentTP);
@@ -109,11 +112,18 @@ public class CreatePlanTable : MonoBehaviour {
             info.id = (string)dataSet.Tables[0].Rows[i][1];
             info.actName = (string)dataSet.Tables[0].Rows[i][2];
             info.hand = int.Parse(dataSet.Tables[0].Rows[i][3].ToString());
+            info.day = dataSet.Tables[0].Rows[i][6].ToString();
+            info.time = dataSet.Tables[0].Rows[i][4].ToString();
+            info.span = dataSet.Tables[0].Rows[i][5].ToString();
             info.obj = row.transform.Find("ActionImageButton").GetComponent<Button>().gameObject;
             row.transform.Find("ActionImageButton").GetComponent<Button>().onClick.AddListener(
                 delegate ()
                 {
                     selectAction(info);
+                    GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorEditPlanPanel");
+                    GameObject obj = GameObject.Find("Canvas/DoctorEditPlanPanel");
+                    DoctorEditPlanPanel panel = (DoctorEditPlanPanel)obj.GetComponent(typeof(DoctorEditPlanPanel));
+                    panel.Start();
                 }
                 );
             row.transform.Find("ActionNameToggle").GetComponent<Toggle>().isOn = false;
@@ -137,6 +147,9 @@ public class CreatePlanTable : MonoBehaviour {
         PlayerPrefs.SetString("selectStdActionID", info.id);
         PlayerPrefs.SetString("selectStdActionName", info.actName);
         PlayerPrefs.SetInt("selectPlanHand", info.hand);
+        PlayerPrefs.SetString("selectPlanDays", info.day);
+        PlayerPrefs.SetString("selectPlanTimes", info.time);
+        PlayerPrefs.SetString("selectPlanSpan", info.span);
     }
 
     void chooseAction(PlanToggleInfo info)

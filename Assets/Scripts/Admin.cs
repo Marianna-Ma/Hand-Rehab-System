@@ -144,7 +144,7 @@ public class Admin : MonoBehaviour {
 	/// <summary>
 	/// 查询所有医生，返回医生编号、姓名、性别、职称、电话
 	/// </summary>
-	public string[,] QueryDoctor() {
+	public DataTable QueryDoctor() {
 		mysql = new MySqlAccess(host, port, userName, password, databaseName);
 		mysql.OpenSql ();
 		string[,] res = new string[1, 1];
@@ -152,40 +152,51 @@ public class Admin : MonoBehaviour {
 		string query = "select dc_id, dc_name, dc_sex, dc_pro, dc_tele from doc where dc_ex = 1";
 		DataSet ds = mysql.QuerySet (query);
 		DataTable table = ds.Tables [0];
-		int row_num = table.Rows.Count;
-		if (row_num != 0) {
-			int col_num = table.Rows [0].ItemArray.Length;
-			res = new string[row_num, col_num];
-			for (int i = 0; i < row_num; i++) {
-				for (int j = 0; j < col_num; j++) {
-					res [i, j] = table.Rows [i] [j].ToString ();
-				}
-			}
-		} 
-		mysql.Close ();
-		int row = res.GetLength (0);
-		int col = res.GetUpperBound (res.Rank - 1) + 1;
-		for (int i = 0; i < row; i++)
-			for (int j = 0; j < col; j++)
-				Debug.Log (res [i, j]);
-		return res;
+		//int row_num = table.Rows.Count;
+		//if (row_num != 0) {
+		//	int col_num = table.Rows [0].ItemArray.Length;
+		//	res = new string[row_num, col_num];
+		//	for (int i = 0; i < row_num; i++) {
+		//		for (int j = 0; j < col_num; j++) {
+		//			res [i, j] = table.Rows [i] [j].ToString ();
+		//		}
+		//	}
+		//} 
+		//mysql.Close ();
+		//int row = res.GetLength (0);
+		//int col = res.GetUpperBound (res.Rank - 1) + 1;
+		//for (int i = 0; i < row; i++)
+		//	for (int j = 0; j < col; j++)
+		//		Debug.Log (res [i, j]);
+		return table;
 	}
 
 
 	/// <summary>
 	/// 删除医生
 	/// </summary>
-//	public void DeleteDoctor(string[] dc_id) {
-	public void DeleteDoctor() {
+	public int DeleteDoctor(List<string> dc_id) {
 		mysql = new MySqlAccess(host, port, userName, password, databaseName);
 		mysql.OpenSql ();
-		//		string[] dcID = dc_id;
-		string[] dcID = {"200001", "200002"};
-		for (int i = 0; i < dcID.Length; i++) {
-			string query = "update doc set dc_ex = 0 where dc_id = '" + dcID [i] + "'";
-			DataSet ds = mysql.QuerySet (query);
-		}
-		mysql.Close ();
+        int flag = 1;
+        foreach (string id in dc_id) {
+            string query1 = "select * from doc where dc_id = '" + id + "'";
+            DataSet ds1 = mysql.QuerySet(query1);
+            if (ds1.Tables[0].Rows.Count == 0)
+            {
+                flag = 0;
+                mysql.Close();
+                return 1;
+            }
+        }
+        if (flag == 1) {
+            foreach (string id in dc_id) {
+                string query = "update doc set dc_ex = 0 where dc_id = '" +  id + "'";
+                DataSet ds = mysql.QuerySet(query);
+            }
+            mysql.Close();
+        }
+		return 0;
 	}
 
 
@@ -269,4 +280,18 @@ public class Admin : MonoBehaviour {
 		mysql.Close ();
 		return res;
 	}
+    /// <summary>
+    /// 管理员查看医生的病人信息
+    /// </summary>
+    /// <returns></returns>
+    public DataTable QueryPatient(string dcID)
+    {
+        mysql = new MySqlAccess(host, port, userName, password, databaseName);
+        mysql.OpenSql();
+        string query = "select pt_id, pt_name, pt_sex, pt_tele from pat where pt_dcID = '" + dcID + "' and pt_ex = 1";
+        DataSet ds = mysql.QuerySet(query);
+        DataTable table = ds.Tables[0];
+        mysql.Close();
+        return table;
+    }
 }

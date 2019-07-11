@@ -5,14 +5,15 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CreatePatientPlanTable : MonoBehaviour {
+public class CreateAdminPlanTable : MonoBehaviour {
+
 
     public DataSet currentTP;
     public GameObject PlanData_Prefab;//表头预设
 
     public void Start()
     {
-        GameObject table = GameObject.Find("Canvas/PatientCheckPlanPanel/ScrollView/Viewport/Content");
+        GameObject table = GameObject.Find("Canvas/AdminCheckPlanPanel/ScrollView/Viewport/Content");
         foreach (Transform t in table.GetComponentsInChildren<Transform>())
         {
             if (t.name.Contains("plan".ToLower()))
@@ -20,9 +21,11 @@ public class CreatePatientPlanTable : MonoBehaviour {
                 Destroy(t.gameObject);//删除之前的内容
             }
         }
-        //string pt_ID = PlayerPrefs.GetString("selectPatientID");
-        //currentTP = TrainingPlan.findUnfinishedTrainingPlan(pt_ID); //TODO：获得病人编号
-        currentTP = TrainingPlan.findUnfinishedTrainingPlan("300001");
+        GameObject nameText = GameObject.Find("Canvas/AdminCheckPlanPanel/NameText");
+        nameText.transform.GetComponent<Text>().text = PlayerPrefs.GetString("selectPatientName");
+        string pt_ID = PlayerPrefs.GetString("selectPatientID");
+        currentTP = TrainingPlan.findUnfinishedTrainingPlan(pt_ID);
+        //currentTP = TrainingPlan.findOnesTrainingPlan("300001"); //TODO：获得病人编号;
 
         if (currentTP.Tables[0].Rows.Count > 0)
         {
@@ -38,8 +41,8 @@ public class CreatePatientPlanTable : MonoBehaviour {
 
     void CreateTable(DataSet dataSet)
     {
-        GameObject table = GameObject.Find("Canvas/PatientCheckPlanPanel/ScrollView/Viewport/Content");
-        GameObject plandata = GameObject.Find("Canvas/PatientCheckPlanPanel/ScrollView/Viewport/Content/PatientPlanData");
+        GameObject table = GameObject.Find("Canvas/AdminCheckPlanPanel/ScrollView/Viewport/Content");
+        GameObject plandata = GameObject.Find("Canvas/AdminCheckPlanPanel/ScrollView/Viewport/Content/AdminPatientPlanData");
         plandata.SetActive(false);
 
         for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)//添加并修改预设的过程
@@ -63,18 +66,7 @@ public class CreatePatientPlanTable : MonoBehaviour {
                 Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                 row.transform.Find("ActionImageButton").GetComponent<Image>().sprite = sprite;  //TODO：给按钮加图片
             }
-
-            PlanButtonInfo info = new PlanButtonInfo();
-            info.id = (string)dataSet.Tables[0].Rows[i][1];
-            info.actName = dataSet.Tables[0].Rows[i][2].ToString();
-            info.hand = int.Parse(dataSet.Tables[0].Rows[i][3].ToString());
-            info.obj = row.transform.Find("ActionImageButton").GetComponent<Button>().gameObject;
-            row.transform.Find("ActionImageButton").GetComponent<Button>().onClick.AddListener(
-                delegate ()
-                {
-                    selectAction(info);
-                }
-                );
+            
             string name = dataSet.Tables[0].Rows[i][2].ToString();
             if ("0" == dataSet.Tables[0].Rows[i][3].ToString()) name += "(左手)";
             else name += "(右手)";
@@ -82,18 +74,7 @@ public class CreatePatientPlanTable : MonoBehaviour {
             row.transform.Find("Time").Find("TimeText").GetComponent<Text>().text = dataSet.Tables[0].Rows[i][5].ToString();
             row.transform.Find("NumTotal").Find("NumText").GetComponent<Text>().text = dataSet.Tables[0].Rows[i][4].ToString();
             row.transform.Find("DayTotal").Find("DayText").GetComponent<Text>().text = dataSet.Tables[0].Rows[i][6].ToString();
-            row.transform.Find("Num").Find("NumText").GetComponent<Text>().text = dataSet.Tables[0].Rows[i][8].ToString();
-            row.transform.Find("Day").Find("DayText").GetComponent<Text>().text = dataSet.Tables[0].Rows[i][7].ToString();
             row.SetActive(true);
         }
-    }
-
-    void selectAction(PlanButtonInfo info)
-    {
-        Debug.Log("info: " + info.id);
-        Debug.Log("action Name: " + info.actName);
-        PlayerPrefs.SetString("selectStdActionID", info.id);
-        PlayerPrefs.SetString("selectStdActionName", info.actName);
-        PlayerPrefs.SetInt("selectPlanHand", info.hand);
     }
 }

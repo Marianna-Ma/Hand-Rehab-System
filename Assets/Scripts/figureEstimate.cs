@@ -9,6 +9,14 @@ using System;
 using System.Data;
 
 public class figureEstimate : MonoBehaviour, IPointerClickHandler {
+	public static string host = "119.3.231.171";		//IP地址
+	public static string port = "3306";					//端口号
+	public static string userName = "admin";			//用户名
+	public static string password = "Rehabsys@2019";	//密码
+	public static string databaseName = "rehabsys";		//数据库名称
+
+	//封装好的数据库类
+	MySqlAccess mysql;
 
 	public void OnPointerClick(PointerEventData eventData) {
 		if (eventData.pointerPress.name == "confirmButton") {
@@ -44,6 +52,20 @@ public class figureEstimate : MonoBehaviour, IPointerClickHandler {
 				}
 			}
 			Debug.Log ("res   " + res);
+
+			PlayerPrefs.SetString ("newActionID", "400005");
+			string newActionID = "";
+			if (PlayerPrefs.HasKey("newActionID")) {
+				newActionID = PlayerPrefs.GetString ("newActionID");
+			}
+			Debug.Log ("newActionID" + newActionID);
+
+			mysql = new MySqlAccess(host, port, userName, password, databaseName);
+			mysql.OpenSql ();
+			string query = "insert into est values('" + newActionID + "', '" + res + "')";
+			mysql.QuerySet (query);
+			Debug.Log (query);
+			mysql.Close ();
 		}
 	}
 }

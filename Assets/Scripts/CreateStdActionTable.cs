@@ -29,7 +29,7 @@ public class CreateStdActionTable : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
+    public void Start () {
         localPicPath = Application.dataPath + "/StandardActionPic/";
         actionLib = new StandardActionLibrary();
         actionTable = actionLib.findStandardActions();

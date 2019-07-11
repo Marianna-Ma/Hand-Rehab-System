@@ -13,7 +13,7 @@ public class DoctorSetPlanPanel : MonoBehaviour, IPointerClickHandler{
     string patient_id = "";
 
     // Use this for initialization
-    void Start () {
+    public void Start () {
         //PlayerPrefs.SetString("selectPatientID", "300001");
         //PlayerPrefs.SetString("selectStdActionID", "400002");
         //PlayerPrefs.SetString("selectStdActionName", "食指伸展");

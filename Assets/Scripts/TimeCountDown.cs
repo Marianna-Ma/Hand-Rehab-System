@@ -11,10 +11,7 @@ public class TimeCountDown : MonoBehaviour {
     public int time2 = 3;
 	// Use this for initialization
 	void Start () {
-        //GameObject.Find("leftHand").SetActive(true);
-        //GameObject.Find("rightHand").SetActive(true);
-        //GameObject.Find("LeapControlledHands/leftHand").SetActive(true);
-        //GameObject.Find("LeapControlledHands/rightHand").SetActive(true);
+        GameObject.Find("ResultText").SetActive(false);
         GameObject.Find("Canvas").GetComponent<HandControl>().ShowHands();
         StartCoroutine(Count());
         GameObject.Find("CountDownThreeText").GetComponent<Text>().text = "";
@@ -30,6 +27,7 @@ public class TimeCountDown : MonoBehaviour {
 
     IEnumerator Count()
     {
+        GameObject.Find("ResultText").SetActive(false);
         while (time > 0)
         {
             GameObject.Find("TimeCountDownText").GetComponent<Text>().text = time.ToString("00");
@@ -62,8 +60,6 @@ public class TimeCountDown : MonoBehaviour {
 
     void TrainOver()
     {
-        //GameObject.Find("leftHand").SetActive(false);
-       // GameObject.Find("rightHand").SetActive(false);
         GameObject.Find("TimeCountDownText").GetComponent<Text>().text = "训练完成";
     }
 

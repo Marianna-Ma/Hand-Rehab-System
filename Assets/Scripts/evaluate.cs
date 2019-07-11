@@ -369,9 +369,9 @@ public class evaluate : MonoBehaviour
     /// </summary>
     public void PrintEvaluation()
     {
-        //leaphandleft.SetActive(false);
-        //leaphandright.SetActive(false);
-        GameObject.Find("Canvas").GetComponent<HandControl>().InvisiHands();
+        leaphandleft.SetActive(false);
+        leaphandright.SetActive(false);
+        //GameObject.Find("Canvas").GetComponent<HandControl>().InvisiHands();
 
         SpecialEffectFirst();
         Invoke("SpecialEffectSecond", 2.5f);
@@ -389,7 +389,7 @@ public class evaluate : MonoBehaviour
     {
         _Pre_2.SetActive(true);
         _pre_3.SetActive(true);
-
+        GameObject.Find("ResultText").SetActive(true);
         if (Evaluation < 0.5)
         {
             GameObject.Find("ResultText").GetComponent<Text>().text = "继续努力哦~";

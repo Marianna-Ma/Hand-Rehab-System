@@ -4,8 +4,8 @@ using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CreatePatientPanel : MonoBehaviour
-{
+public class CreateAdminPatientPanel : MonoBehaviour {
+
     //IP地址
     public static string host = "119.3.231.171";
     //端口号
@@ -18,7 +18,7 @@ public class CreatePatientPanel : MonoBehaviour
     public static string databaseName = "rehabsys";
 
     DataTable patientTable;
-    Doctor doctor;
+    Admin admin;
     public GameObject PatientData_Prefab;
 
     void Awake()
@@ -29,7 +29,7 @@ public class CreatePatientPanel : MonoBehaviour
     // Use this for initialization
     public void Start()
     {
-        GameObject table = GameObject.Find("Canvas/DoctorCheckPatientPanelNew/ScrollView/Viewport/Content");
+        GameObject table = GameObject.Find("Canvas/AdminCheckPatientPanel/ScrollView/Viewport/Content");
         foreach (Transform t in table.GetComponentsInChildren<Transform>())
         {
             if (t.name.Contains("patient".ToLower()))
@@ -37,10 +37,13 @@ public class CreatePatientPanel : MonoBehaviour
                 Destroy(t.gameObject);//删除之前的内容
             }
         }
+        PlayerPrefs.SetString("userID", "100001");
         if (PlayerPrefs.HasKey("userID"))
         {
-            doctor = new Doctor(host, port, userName, password, databaseName);
-            patientTable = doctor.QueryPatient();
+            admin = new Admin(host, port, userName, password, databaseName);
+            string dc_ID = PlayerPrefs.GetString("selectDoctorID");
+            patientTable = admin.QueryPatient(dc_ID);
+            //patientTable = admin.QueryPatient("200001");
         }
         else patientTable = null;
         CreateTable(patientTable);
@@ -54,8 +57,8 @@ public class CreatePatientPanel : MonoBehaviour
 
     void CreateTable(DataTable patientTable)
     {
-        GameObject table = GameObject.Find("Canvas/DoctorCheckPatientPanelNew/ScrollView/Viewport/Content");
-        GameObject patientdata = GameObject.Find("Canvas/DoctorCheckPatientPanelNew/ScrollView/Viewport/Content/PatientDataNew");
+        GameObject table = GameObject.Find("Canvas/AdminCheckPatientPanel/ScrollView/Viewport/Content");
+        GameObject patientdata = GameObject.Find("Canvas/AdminCheckPatientPanel/ScrollView/Viewport/Content/AdminPatientData");
         if (patientdata != null) patientdata.SetActive(false);
         for (int i = 0; i < patientTable.Rows.Count; i++)
         {
@@ -64,9 +67,8 @@ public class CreatePatientPanel : MonoBehaviour
             row.transform.SetParent(table.transform);
             row.transform.localScale = Vector3.one;//设置缩放比例1,1,1，不然默认的比例非常大
             //设置预设实例中的各个子物体的文本内容
-            row.transform.Find("PatientNameToggle").GetComponent<Toggle>().isOn = false;
-            row.transform.Find("PatientNameToggle").Find("Label").GetComponent<Text>().text = (string)patientTable.Rows[i][0];
-            row.transform.Find("PatientName").Find("PatientNameText").GetComponent<Text>().text = (string)patientTable.Rows[i][1];
+            row.transform.Find("PatientID").GetComponent<Text>().text = patientTable.Rows[i][0].ToString();
+            row.transform.Find("PatientName").Find("PatientNameText").GetComponent<Text>().text = patientTable.Rows[i][1].ToString();
             ButtonInfo info = new ButtonInfo();
             info.id = (string)patientTable.Rows[i][0];
             info.actName = (string)patientTable.Rows[i][1];
@@ -75,14 +77,14 @@ public class CreatePatientPanel : MonoBehaviour
                 delegate ()
                 {
                     selectAction(info);
-                    GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPlanPanelNew");
-                    GameObject obj = GameObject.Find("Canvas/DoctorCheckPlanPanelNew");
-                    CreatePlanTable panel = (CreatePlanTable)obj.GetComponent(typeof(CreatePlanTable));
+                    GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminCheckPlanPanel");
+                    GameObject obj = GameObject.Find("Canvas/AdminCheckPlanPanel");
+                    CreateAdminPlanTable panel = (CreateAdminPlanTable)obj.GetComponent(typeof(CreateAdminPlanTable));
                     panel.Start();
                 }
                 );
-            row.transform.Find("PatientSex").GetComponent<Text>().text = (string)patientTable.Rows[i][2];
-            row.transform.Find("PatientTele").GetComponent<Text>().text = (string)patientTable.Rows[i][3];
+            row.transform.Find("PatientSex").GetComponent<Text>().text = patientTable.Rows[i][2].ToString();
+            row.transform.Find("PatientTele").GetComponent<Text>().text = patientTable.Rows[i][3].ToString();
             row.SetActive(true);
         }
     }
@@ -94,3 +96,4 @@ public class CreatePatientPanel : MonoBehaviour
         PlayerPrefs.SetString("selectPatientName", info.actName);
     }
 }
+
