@@ -14,6 +14,12 @@ public class PatientStartPanel : MonoBehaviour {
 		
 	}
 
+	//跳转修改密码界面
+	public void ClickPatientUpdatePswdButton()
+	{
+		GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientUpdatePasswordPanel");
+	}
+
     //跳转去个人信息修改界面
     public void ClickPatientChangeInfoButton()
     {

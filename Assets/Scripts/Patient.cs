@@ -31,7 +31,7 @@ public class Patient : MonoBehaviour {
 	/// <summary>
 	/// 按下UpdatePswd按钮
 	/// </summary>
-	public void UpdatePassword(string first_pswd, string second_pswd) {
+	public int UpdatePassword(string first_pswd, string second_pswd) {
 		string userID = "";
 		if (PlayerPrefs.HasKey("userID")) {
 			userID = PlayerPrefs.GetString ("userID");
@@ -49,6 +49,8 @@ public class Patient : MonoBehaviour {
 		if (firstPswd.Length < 6 || firstPswd.Length > 20) {
 			flag = 0;
 			Debug.Log ("密码长度应为6~20个字符");
+			mysql.Close();
+			return 1;
 		}
 		else {
 			string query = "";
@@ -65,10 +67,14 @@ public class Patient : MonoBehaviour {
 			if (beforePswd == firstPswd) {
 				flag = 0;
 				Debug.Log ("新密码不可与原密码相同");
+				mysql.Close();
+				return 2;
 			} else {
 				if (firstPswd != secondPswd) {
 					flag = 0;
 					Debug.Log ("两次密码不一致");
+					mysql.Close();
+					return 3;
 				} else {
 					flag = 1;
 				}
@@ -86,12 +92,13 @@ public class Patient : MonoBehaviour {
 			Debug.Log ("修改密码成功，新密码为：" + firstPswd);
 		}
 		mysql.Close ();
+		return 0;
 	}
 
 	/// <summary>
 	/// 按下Change Info按钮
 	/// </summary>
-	public void ChangeInfo(string pt_name, string pt_sex, string pt_tele) {
+	public int ChangeInfo(string pt_name, string pt_sex, string pt_tele) {
 		string ptID = "";
 		if (PlayerPrefs.HasKey("userID")) {
 			ptID = PlayerPrefs.GetString ("userID");
@@ -104,11 +111,19 @@ public class Patient : MonoBehaviour {
 
 		mysql = new MySqlAccess(host, port, userName, password, databaseName);
 		mysql.OpenSql ();
-		string query = "update pat set pt_name = '" + ptName + "', pt_sex = '" + ptSex + "', pt_tele = '" + ptTele + "' where pt_id = '" + ptID + "'";
-		DataSet ds = mysql.QuerySet (query);
-		DataTable table = ds.Tables [0];
-
+		string query1 = "select * from pat where pt_id = '" + ptID + "'";
+		DataSet ds1 = mysql.QuerySet(query1);
+		if (ds1.Tables[0].Rows.Count == 0)
+		{
+			mysql.Close();
+			return 1;
+		}
+		else {
+			string query = "update pat set pt_name = '" + ptName + "', pt_sex = '" + ptSex + "', pt_tele = '" + ptTele + "' where pt_id = '" + ptID + "'";
+			DataSet ds = mysql.QuerySet(query);
+		}
 		mysql.Close ();
+		return 0;
 	}
 
 	public string[,] SelectRecords(string start_date, string end_date) {
