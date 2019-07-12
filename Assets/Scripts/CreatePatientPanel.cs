@@ -20,6 +20,7 @@ public class CreatePatientPanel : MonoBehaviour
     DataTable patientTable;
     Doctor doctor;
     public GameObject PatientData_Prefab;
+    List<string> selectPatientList = new List<string>();
 
     void Awake()
     {
@@ -66,6 +67,11 @@ public class CreatePatientPanel : MonoBehaviour
             //设置预设实例中的各个子物体的文本内容
             row.transform.Find("PatientNameToggle").GetComponent<Toggle>().isOn = false;
             row.transform.Find("PatientNameToggle").Find("Label").GetComponent<Text>().text = (string)patientTable.Rows[i][0];
+            ToggleInfo toggleInfo = new ToggleInfo();
+            toggleInfo.id = (string)patientTable.Rows[i][0];
+            toggleInfo.status = false;
+            row.transform.Find("PatientNameToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => choosePatient(toggleInfo));
+
             row.transform.Find("PatientName").Find("PatientNameText").GetComponent<Text>().text = (string)patientTable.Rows[i][1];
             ButtonInfo info = new ButtonInfo();
             info.id = (string)patientTable.Rows[i][0];
@@ -92,5 +98,28 @@ public class CreatePatientPanel : MonoBehaviour
         Debug.Log("Clicked");
         PlayerPrefs.SetString("selectPatientID", info.id);
         PlayerPrefs.SetString("selectPatientName", info.actName);
+    }
+
+    void choosePatient(ToggleInfo info)
+    {
+        info.status = !info.status;
+        Debug.Log("info id: " + info.id);
+        Debug.Log("info status: " + info.status);
+        if (info.status == true)
+            selectPatientList.Add(info.id);
+        else
+            selectPatientList.Remove(info.id);
+    }
+
+    public void getSelectPatientList(List<string> newList)
+    {
+        Debug.Log("*******************************");
+        foreach (string id in selectPatientList)
+        {
+            Debug.Log(id);
+            newList.Add(id);
+
+        }
+
     }
 }

@@ -27,7 +27,7 @@ public class AdminCheckDoctorPanel : MonoBehaviour {
         SmallPanel.SetActive(true);
         GameObject.Find("AddDoctorButton").GetComponent<Button>().interactable = false;
         GameObject.Find("DeleteDoctorButton").GetComponent<Button>().interactable = false;
-        GameObject.Find("BackButton").GetComponent<Button>().interactable = false;
+        GameObject.Find("Canvas/AdminCheckDoctorPanel/BackButton").GetComponent<Button>().interactable = false;
     }
 
     public void ClickBackButton()

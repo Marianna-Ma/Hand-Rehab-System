@@ -157,4 +157,38 @@ public class TrainingPlan{
         return ds;
     }
 
+    public static string[,] searchUnAddTrainingPlan(string patient_id)
+    {
+        MySqlAccess mysql = new MySqlAccess(host, port, userName, password, databaseName);
+        string[,] res = new string[1, 1];
+        res[0, 0] = "";
+        mysql.OpenSql();
+        string querySql = "select ac_id, ac_name, ac_pic from act where ac_ex=1 and ac_id not in (" +
+            "select trp_actID from trp where trp_ptID = '" + patient_id + "')";
+        DataSet ds = mysql.SimpleSql(querySql);
+        int row_num = ds.Tables[0].Rows.Count;
+        if (row_num != 0)
+        {
+            int col_num = ds.Tables[0].Rows[0].ItemArray.Length;
+            //Debug.Log("rows num: " + row_num);
+            //Debug.Log("cols_num: " + col_num);
+            res = new string[row_num, col_num];
+            for (int i = 0; i < row_num; i++)
+            {
+                for (int j = 0; j < col_num; j++)
+                {
+                    //Debug.Log("content: " + ds.Tables[0].Rows[i][j]);
+                    res[i, j] = ds.Tables[0].Rows[i][j].ToString();
+                }
+            }
+        }
+        else
+        {
+            res[0, 0] = "null";
+
+        }
+        mysql.Close();
+        return res;
+    }
+
 }

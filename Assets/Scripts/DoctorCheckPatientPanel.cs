@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DoctorCheckPatientPanel : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
+    public GameObject SmallPanel;
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -21,7 +22,11 @@ public class DoctorCheckPatientPanel : MonoBehaviour {
 
     public void ClickDeletePatientButton()
     {
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorDeletePatientPanel");
+        //GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorDeletePatientPanel");
+        SmallPanel.SetActive(true);
+        GameObject.Find("AddPatientButton").GetComponent<Button>().interactable = false;
+        GameObject.Find("DeletePatientButton").GetComponent<Button>().interactable = false;
+        GameObject.Find("Canvas/DoctorCheckPatientPanelNew/BackButton").GetComponent<Button>().interactable = false;
     }
 
     public void ClickBackButton()

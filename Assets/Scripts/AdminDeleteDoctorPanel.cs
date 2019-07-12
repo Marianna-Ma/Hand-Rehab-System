@@ -44,7 +44,7 @@ public class AdminDeleteDoctorPanel : MonoBehaviour {
         SmallPanel.SetActive(false);
         GameObject.Find("AddDoctorButton").GetComponent<Button>().interactable = true;
         GameObject.Find("DeleteDoctorButton").GetComponent<Button>().interactable = true;
-        GameObject.Find("BackButton").GetComponent<Button>().interactable = true;
+        GameObject.Find("Canvas/AdminCheckDoctorPanel/BackButton").GetComponent<Button>().interactable = true;
         GameObject.Find("AdminCheckDoctorPanel").GetComponent<CreateDocPanel>().Start();
     }
 
@@ -53,7 +53,8 @@ public class AdminDeleteDoctorPanel : MonoBehaviour {
         SmallPanel.SetActive(false);
         GameObject.Find("AddDoctorButton").GetComponent<Button>().interactable = true;
         GameObject.Find("DeleteDoctorButton").GetComponent<Button>().interactable = true;
-        GameObject.Find("BackButton").GetComponent<Button>().interactable = true;
+        GameObject.Find("Canvas/AdminCheckDoctorPanel/BackButton").GetComponent<Button>().interactable = true;
+        GameObject.Find("AdminCheckDoctorPanel").GetComponent<CreateDocPanel>().Start();
         //GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminStartPanel");
     }
 }
