@@ -68,7 +68,7 @@ public class TrainingPlan{
         MySqlAccess mysql = new MySqlAccess(host, port, userName, password, databaseName);
         mysql.OpenSql();
         string querySql = "select trp_ptID,trp_actID,ac_name,trp_hand,trp_num,trp_time,trp_totl,trp_finish,trp_alnum" +
-            " from trp,act where trp_ptID = '" + trp_ptID + "' and trp_actID=ac_id and trp_totl > trp_finish";
+            " from trp,act where trp_ptID = '" + trp_ptID + "' and trp_actID=ac_id and trp_totl > trp_finish and trp_num > trp_alnum";
         DataSet ds = mysql.SimpleSql(querySql);
         mysql.Close();
         return ds;
@@ -111,20 +111,13 @@ public class TrainingPlan{
         mysql.Close();
     }
 
-    public static void finishOneDayTrainingPlan(string trp_ptID, string trp_actID, int trp_hand)
+    public static void finishOneDayTrainingPlan(string trp_ptID)
     {
         MySqlAccess mysql = new MySqlAccess(host, port, userName, password, databaseName);
         mysql.OpenSql();
-        string querySql = "select trp_ptID, trp_actID, trp_hand from trp where trp_ptID = '" 
-            + trp_ptID + "' and trp_actID = '" + trp_actID + "' and trp_hand = '" + trp_hand + "'";
+        string querySql = "update trp set trp_finish=trp_finish+1 where trp_ptID = '"
+                + trp_ptID + "' and trp_num > 0 and trp_num = trp_alnum";
         DataSet ds = mysql.SimpleSql(querySql);
-        if (ds.Tables[0].Rows.Count != 0)
-        {
-            querySql = "update trp set trp_finish=trp_finish+1,trp_alnum=0 where trp_ptID = '"
-                + trp_ptID + "' and trp_actID = '" + trp_actID + "' and trp_hand = '" + trp_hand + "'";
-            Debug.Log(querySql);
-            mysql.SimpleSql(querySql);
-        }
         mysql.Close();
     }
 

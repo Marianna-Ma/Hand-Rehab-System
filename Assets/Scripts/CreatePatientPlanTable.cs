@@ -68,11 +68,14 @@ public class CreatePatientPlanTable : MonoBehaviour {
             info.id = (string)dataSet.Tables[0].Rows[i][1];
             info.actName = dataSet.Tables[0].Rows[i][2].ToString();
             info.hand = int.Parse(dataSet.Tables[0].Rows[i][3].ToString());
+            info.span = dataSet.Tables[0].Rows[i][5].ToString();
             info.obj = row.transform.Find("ActionImageButton").GetComponent<Button>().gameObject;
             row.transform.Find("ActionImageButton").GetComponent<Button>().onClick.AddListener(
                 delegate ()
                 {
                     selectAction(info);
+                    GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientTrainPanel");
+                    GameObject.Find("PatientTrainPanel/TrainTestButton").GetComponent<TimeCountDown>().StartCountDown();
                 }
                 );
             string name = dataSet.Tables[0].Rows[i][2].ToString();
@@ -95,5 +98,6 @@ public class CreatePatientPlanTable : MonoBehaviour {
         PlayerPrefs.SetString("selectStdActionID", info.id);
         PlayerPrefs.SetString("selectStdActionName", info.actName);
         PlayerPrefs.SetInt("selectPlanHand", info.hand);
+        PlayerPrefs.SetString("selectPlanSpan", info.span);
     }
 }

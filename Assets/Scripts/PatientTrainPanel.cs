@@ -1,9 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PatientTrainPanel : MonoBehaviour {
 
+<<<<<<< HEAD
+    public void OnPointerClick(PointerEventData eventData)
+=======
     public GameObject leaphandleft;
     public GameObject leaphandright;
 
@@ -23,8 +29,12 @@ public class PatientTrainPanel : MonoBehaviour {
 	}
 
     public void ClickTestButton()
+>>>>>>> abbc849db63064b5dff7c46af4221efc5ea98d8b
     {
-        
+        if (eventData.pointerPress.name == "TrainPauseButton")       //如果当前按下的按钮是注册按钮 
+        {
+            Messagebox.MessageBox(IntPtr.Zero, "是否继续？", "暂停中", 0);
+        }
     }
 
     public void ClickTrainPauseButton()

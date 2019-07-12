@@ -26,12 +26,12 @@ public class PatientStartPanel : MonoBehaviour {
         GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientChangeInfoPanel");
     }
 
-    //跳转至训练界面
+    //跳转至计划界面
     public void ClickPatientStartButton()
     {
         //GameObject.Find("leftHand").SetActive(true);
         //GameObject.Find("rightHand").SetActive(true);
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientTrainPanel");
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientCheckPlanPanel");
 
     }
 
