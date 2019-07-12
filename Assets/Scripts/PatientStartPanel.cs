@@ -29,8 +29,6 @@ public class PatientStartPanel : MonoBehaviour {
     //跳转至计划界面
     public void ClickPatientStartButton()
     {
-        //GameObject.Find("leftHand").SetActive(true);
-        //GameObject.Find("rightHand").SetActive(true);
         GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientCheckPlanPanel");
 
     }
@@ -46,6 +44,6 @@ public class PatientStartPanel : MonoBehaviour {
     {
         //注销player
         PlayerPrefs.DeleteAll();
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPreviousPanel();
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("LoginPanel");
     }
 }

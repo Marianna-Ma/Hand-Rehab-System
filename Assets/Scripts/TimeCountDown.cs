@@ -7,8 +7,10 @@ using UnityEngine.UI;
 
 public class TimeCountDown : MonoBehaviour {
     public GameObject textField;
-    //GameObject leftHand;
-    //GameObject rightHand;
+    GameObject leftHand;
+    GameObject rightHand;
+    public GameObject AssistantCamera;
+
     int time = 30; //此处使用数据库中读取的数据
     public int time2 = 3;
 	// Use this for initialization
@@ -19,6 +21,33 @@ public class TimeCountDown : MonoBehaviour {
         //time = tempTime; //训练计划时间
         //StartCoroutine(Count());
         //GameObject.Find("CountDownThreeText").GetComponent<Text>().text = "";
+    }
+
+    public void CreateDataHands(string leftPath,string rightPath)
+    {
+        if (leftPath != "")
+        {
+            Debug.Log("Creating left hand");
+            leftHand = (GameObject)Resources.Load("leftHand");
+            leftHand = Instantiate(leftHand);
+            leftHand.name = "datacontrolledlefthand";
+            leftHand.GetComponent<DataControlledLeftHand>().Init(leftPath);
+        }
+        if (rightPath != "")
+        {
+            Debug.Log("Creating right hand");
+            rightHand = (GameObject)Resources.Load("rightHand");
+            rightHand = Instantiate(rightHand);
+            rightHand.name = "datacontrolledrighthand";
+            rightHand.GetComponent<DataControlledRightHand>().Init(rightPath);
+        }
+    }
+
+    public void DestroyDataHands()
+    {
+        Debug.Log("Destroying---");
+        Destroy(leftHand);
+        Destroy(rightHand);
     }
 
     public void StartCountDown()
@@ -45,7 +74,7 @@ public class TimeCountDown : MonoBehaviour {
         GameObject.Find("Canvas/PatientTrainPanel/ResultText").SetActive(false);
         while (time > 0)
         {
-            GameObject.Find("TimeCountDownText").GetComponent<Text>().text = time.ToString("00");
+            GameObject.Find("Canvas/PatientTrainPanel/TimeCountDownText").GetComponent<Text>().text = time.ToString("00");
             yield return new WaitForSeconds(1);
             time--;
         }
@@ -69,6 +98,8 @@ public class TimeCountDown : MonoBehaviour {
 
     void TrainOver()
     {
+        DestroyDataHands();
+        AssistantCamera.SetActive(false);
         GameObject.Find("TimeCountDownText").GetComponent<Text>().text = "训练完成";
         Messagebox.MessageBox(IntPtr.Zero, "您已完成一次训练！", "提示", 0);
         TrainingPlan.finishOnceTrainingPlan(PlayerPrefs.GetString("userID"),

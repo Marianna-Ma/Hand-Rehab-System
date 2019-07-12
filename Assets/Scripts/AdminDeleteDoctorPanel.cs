@@ -26,55 +26,7 @@ public class AdminDeleteDoctorPanel : MonoBehaviour {
 		
 	}
 
-<<<<<<< HEAD
-//    public void ClickDeleteDoctorButton()
-//    {
-//        
-//        List<string> selectActList = new List<string>();
-//        //GameObject obj = GameObject.Find("Canvas/AdminCheckDoctorPanel");
-//        //CreateDocPanel panel = (CreateDocPanel)obj.GetComponent(typeof(CreateDocPanel));
-//        GameObject.Find("Canvas/AdminCheckDoctorPanel").GetComponent<CreateDocPanel>().getSelectActList(selectActList);
-//
-//        Admin test = new Admin(host, port, userName, password, databaseName);
-//        int flag = test.DeleteDoctor(selectActList);
-//		if (flag == 1)
-//			Messagebox.MessageBox (IntPtr.Zero, "删除医生失败！", "失败", 0);
-//		else {
-//			Debug.Log ("你为啥不关！");
-//			Messagebox.MessageBox (IntPtr.Zero, "删除医生成功！", "成功", 0);
-//
-//		}
-//		Debug.Log ("你关啊！！！");
-//		GameObject.Find ("Canvas/AdminDeleteDoctorPanel").SetActive (false);
-//        //SmallPanel.SetActive(false);
-//        GameObject.Find("AddDoctorButton").GetComponent<Button>().interactable = true;
-//        GameObject.Find("DeleteDoctorButton").GetComponent<Button>().interactable = true;
-//        GameObject.Find("BackButton").GetComponent<Button>().interactable = true;
-//        GameObject.Find("AdminCheckDoctorPanel").GetComponent<CreateDocPanel>().Start();
-//    }
-=======
-    public void ClickDeleteDoctorButton()
-    {
-        
-        List<string> selectActList = new List<string>();
-        //GameObject obj = GameObject.Find("Canvas/AdminCheckDoctorPanel");
-        //CreateDocPanel panel = (CreateDocPanel)obj.GetComponent(typeof(CreateDocPanel));
-        GameObject.Find("Canvas/AdminCheckDoctorPanel").GetComponent<CreateDocPanel>().getSelectActList(selectActList);
 
-        Admin test = new Admin(host, port, userName, password, databaseName);
-        int flag = test.DeleteDoctor(selectActList);
-        if (flag == 1)
-            Messagebox.MessageBox(IntPtr.Zero, "删除医生失败！", "失败", 0);
-        else
-            Messagebox.MessageBox(IntPtr.Zero, "删除医生成功！", "成功", 0);
-
-        SmallPanel.SetActive(false);
-        GameObject.Find("AddDoctorButton").GetComponent<Button>().interactable = true;
-        GameObject.Find("DeleteDoctorButton").GetComponent<Button>().interactable = true;
-        GameObject.Find("Canvas/AdminCheckDoctorPanel/BackButton").GetComponent<Button>().interactable = true;
-        GameObject.Find("AdminCheckDoctorPanel").GetComponent<CreateDocPanel>().Start();
-    }
->>>>>>> e95ab496ce29c3711098d7e32051d445e7cfbd47
 
     public void ClickBackButton()
     {

@@ -10,6 +10,8 @@ public class CreatePatientPlanTable : MonoBehaviour {
     public DataSet currentTP;
     public GameObject PlanData_Prefab;//表头预设
 
+    public GameObject AssistantCamera;
+
     public void Start()
     {
         GameObject table = GameObject.Find("Canvas/PatientCheckPlanPanel/ScrollView/Viewport/Content");
@@ -75,7 +77,14 @@ public class CreatePatientPlanTable : MonoBehaviour {
                 {
                     selectAction(info);
                     GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientTrainPanel");
+                    AssistantCamera.SetActive(true);
                     GameObject.Find("PatientTrainPanel/TrainTestButton").GetComponent<TimeCountDown>().StartCountDown();
+                    string left = "", right = "";
+                    if (info.hand == 0) left = "/StandardActionLibrary/" + info.id + "0.json";
+                    else right = "/StandardActionLibrary/" + info.id + "1.json";
+                    Debug.Log(left + "\n" + right);
+                    GameObject.Find("PatientTrainPanel/TrainTestButton").GetComponent<TimeCountDown>()
+                    .CreateDataHands(left, right);
                 }
                 );
             string name = dataSet.Tables[0].Rows[i][2].ToString();

@@ -389,7 +389,7 @@ public class evaluate : MonoBehaviour
     {
         _Pre_2.SetActive(true);
         _pre_3.SetActive(true);
-        GameObject.Find("ResultText").SetActive(true);
+        GameObject.Find("Canvas/PatientTrainPanel/ResultText").SetActive(true);
         if (Evaluation < 0.5)
         {
             GameObject.Find("ResultText").GetComponent<Text>().text = "继续努力哦~";

@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class KeyboardListener : MonoBehaviour {
 
+    public GameObject AssistantCamera;
+
     // Update is called once per frame
     void Update()
     {
@@ -17,6 +19,9 @@ public class KeyboardListener : MonoBehaviour {
             if (EditorUtility.DisplayDialog("退出训练", "您是否要退出训练？", "确认", "取消"))
             {
                 GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientCheckPlanPanel");
+                Destroy(GameObject.Find("datacontrolledlefthand"));
+                Destroy(GameObject.Find("datacontrolledrighthand"));
+                AssistantCamera.SetActive(false);
             }
             else
             {
