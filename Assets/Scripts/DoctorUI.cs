@@ -20,7 +20,7 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 	// 添加患者 面板的输入框
 	public InputField ptIDField;
 	public InputField ptNameField;
-	public InputField ptSexField;
+	//public InputField ptSexField;
 	public InputField ptTeleField;
 
 	// 查看历史记录
@@ -29,9 +29,10 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 	public Text noRecord;
 	//public GameObject historyRecordsPrefab;//表头预设
 	public List<string> selectRecordList = new List<string>(); // 保存哪些toggle被选择
+    public List<string> selectPatientList = new List<string>();
 
 
-	public static string host = "119.3.231.171";		//IP地址
+    public static string host = "119.3.231.171";		//IP地址
 	public static string port = "3306";					//端口号
 	public static string userName = "admin";			//用户名
 	public static string password = "Rehabsys@2019";	//密码
@@ -45,6 +46,7 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 		PlayerPrefs.SetInt ("selectRecordNum", 0);
 		PlayerPrefs.SetString ("selectRecord", "");
 	}
+<<<<<<< HEAD
 	
 	public void OnPointerClick(PointerEventData eventData) {
 		if (eventData.pointerPress.name == "updatePswdButton") {	//如果当前按下的按钮是修改密码按钮
@@ -82,26 +84,50 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 				GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorStartPanel");
 			}
 		}
+=======
+
+    public void OnPointerClick(PointerEventData eventData) {
+        if (eventData.pointerPress.name == "updatePswdButton")  //如果当前按下的按钮是修改密码按钮
+            test.UpdatePassword(dc_firstPswdField.text.ToString(), dc_secondPswdField.text.ToString());
+        if (eventData.pointerPress.name == "changeInfoButton")
+            test.ChangeInfo(dcNameField.text.ToString(), dcSexField.text.ToString(), dcProField.text.ToString(), dcTeleField.text.ToString());
+>>>>>>> e95ab496ce29c3711098d7e32051d445e7cfbd47
         if (eventData.pointerPress.name == "addPatientButton")  //如果当前按下的按钮是添加患者按钮
         {
-            int status = test.AddPatient(ptIDField.text.ToString(), ptNameField.text.ToString(), ptSexField.text.ToString(), ptTeleField.text.ToString());
-            if(status == 1)
+            Dropdown select_sex_item = GameObject.Find("Canvas/DoctorAddPatientPanel/SexDropDown").GetComponent<Dropdown>();
+            string select_sex = select_sex_item.options[select_sex_item.value].text;
+            Debug.Log("****************************8 " + select_sex);
+            int status = test.AddPatient(ptIDField.text.ToString(), ptNameField.text.ToString(), select_sex, ptTeleField.text.ToString());
+            if (status == 1)
                 Messagebox.MessageBox(IntPtr.Zero, "患者账号或姓名不能为空！", "失败", 0);
-            else if(status == 2)
+            else if (status == 2)
                 Messagebox.MessageBox(IntPtr.Zero, "患者账号不在人员表中！", "失败", 0);
-            else if(status == 3)
+            else if (status == 3)
                 Messagebox.MessageBox(IntPtr.Zero, "患者账号已存在！", "失败", 0);
+<<<<<<< HEAD
 			else if (status == 4)
 				Messagebox.MessageBox (IntPtr.Zero, "账号类型错误！", "失败", 0);
             else 
+=======
+            else
+            {
+>>>>>>> e95ab496ce29c3711098d7e32051d445e7cfbd47
                 Messagebox.MessageBox(IntPtr.Zero, "添加患者成功！", "成功", 0);
+                GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPatientPanelNew");
+                GameObject.Find("Canvas/DoctorCheckPatientPanelNew").GetComponent<CreatePatientPanel>().Start();
+                return;
+            }
+                
             GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorAddPatientPanel");
 
         }
-        if (eventData.pointerPress.name == "deletePatientButton")	//如果当前按下的按钮是删除患者按钮
-			test.DeletePatient ();
+        //if (eventData.pointerPress.name == "deletePatientButton") {  //如果当前按下的按钮是删除患者按钮
+            
+        //}
+            
+        //test.DeletePatient ();
 
-		if (eventData.pointerPress.name == "selectDateButton") {
+        if (eventData.pointerPress.name == "selectDateButton") {
 			string startDate = startDateText.text.ToString ();
 			string endDate = endDateText.text.ToString ();
 			string startDateString = changeDateFormat (startDate);
@@ -160,8 +186,8 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 				noRecord.SetActive (true);
 			}
 
-			Debug.Log ("111111111111111111111111111111111111111111111111");
-			Debug.Log (selectRecordList.Count);
+			//Debug.Log ("111111111111111111111111111111111111111111111111");
+			//Debug.Log (selectRecordList.Count);
 			foreach (string id in selectRecordList)
 				Debug.Log (id);
 
@@ -169,7 +195,7 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 
 		if (eventData.pointerPress.name == "historyRecordButton") {
 //			test.HistoryRecord ("20190620", "400001", 0);
-			Debug.Log ("2222222222222222222222222222222222");
+			//Debug.Log ("2222222222222222222222222222222222");
 			int recordNum = 0;
 			if (PlayerPrefs.HasKey("selectRecordNum")) {
 				recordNum = PlayerPrefs.GetInt ("selectRecordNum");

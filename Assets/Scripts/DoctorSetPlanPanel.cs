@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System;
 
 public class DoctorSetPlanPanel : MonoBehaviour, IPointerClickHandler{
     public InputField setDays;
@@ -11,6 +12,11 @@ public class DoctorSetPlanPanel : MonoBehaviour, IPointerClickHandler{
     string select_act_id = "";
     string select_act_name = "";
     string patient_id = "";
+
+    public GameObject BigPanel;
+    public GameObject SmallPanel;
+    public Button SearchButton;
+    public Button BackButton;
 
     // Use this for initialization
     public void Start () {
@@ -44,10 +50,18 @@ public class DoctorSetPlanPanel : MonoBehaviour, IPointerClickHandler{
             string set_times = setTimes.text.ToString();
             string set_span = setSpan.text.ToString();
             Debug.Log(select_hand + " " + set_day + " " + set_times + " " + set_span);
-            //TrainingPlan.addTrainingPlan(patient_id, select_act_id, select_hand, int.Parse(set_times), int.Parse(set_span), int.Parse(set_day));
+            TrainingPlan.addTrainingPlan(patient_id, select_act_id, select_hand, int.Parse(set_times), int.Parse(set_span), int.Parse(set_day));
+            Messagebox.MessageBox(IntPtr.Zero, "添加训练成功！", "成功", 0);
+
+            GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPlanPanelNew");
+
+            SmallPanel.SetActive(false);
+            SearchButton.GetComponent<Button>().interactable = true;
+            BackButton.GetComponent<Button>().interactable = true;
+            BigPanel.GetComponent<CreatePlanTable>().Start();
 
         }
-    
+
     }
 
 	// Update is called once per frame

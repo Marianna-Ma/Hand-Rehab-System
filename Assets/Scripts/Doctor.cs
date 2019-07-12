@@ -220,8 +220,8 @@ public class Doctor : MonoBehaviour {
 	/// <summary>
 	/// 删除患者
 	/// </summary>
-//	public void DeletePatient(string[] pt_id) {
-	public void DeletePatient() {
+	public int DeletePatient(List<string> pt_id) {
+	//public void DeletePatient() {
 		string dcID = "";
 		if (PlayerPrefs.HasKey ("userID")) {
 			dcID = PlayerPrefs.GetString ("userID");
@@ -230,13 +230,29 @@ public class Doctor : MonoBehaviour {
 
 		mysql = new MySqlAccess(host, port, userName, password, databaseName);
 		mysql.OpenSql ();
-//		string[] ptID = pt_id;
-		string[] ptID = {"300002", "300003"};
-		for (int i = 0; i < ptID.Length; i++) {
-			string query = "update pat set pt_ex = 0 where pt_dcID = '" + dcID + "' and pt_id = '" + ptID [i] + "'";
-			DataSet ds = mysql.QuerySet (query);
-		}
+        int flag = 1;
+        foreach(string id in pt_id)
+        {
+            string query1 = "select * from pat where pt_id = '" + id + "'";
+            DataSet ds1 = mysql.QuerySet(query1);
+            if(ds1.Tables[0].Rows.Count == 0)
+            {
+                flag = 0;
+                mysql.Close();
+                return 1;
+            }
+        }
+        if(flag == 1)
+        {
+            foreach (string id in pt_id)
+            {
+                //for (int i = 0; i < pt.Length; i++) {
+                string query = "update pat set pt_ex = 0 where pt_dcID = '" + dcID + "' and pt_id = '" + id + "'";
+                DataSet ds = mysql.QuerySet(query);
+            }
+        }
 		mysql.Close ();
+        return 0;
 	}
 
 	/// <summary>

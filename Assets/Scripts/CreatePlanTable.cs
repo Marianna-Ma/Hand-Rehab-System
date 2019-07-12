@@ -32,6 +32,8 @@ public class CreatePlanTable : MonoBehaviour {
     public bool clicked=false;
     public InputField nameInput;
 
+    public GameObject SmallPanel;
+
     void Awake()
     {
         table = GameObject.Find("Canvas/DoctorCheckPlanPanelNew");
@@ -120,9 +122,16 @@ public class CreatePlanTable : MonoBehaviour {
                 delegate ()
                 {
                     selectAction(info);
-                    GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorEditPlanPanel");
-                    GameObject obj = GameObject.Find("Canvas/DoctorEditPlanPanel");
-                    DoctorEditPlanPanel panel = (DoctorEditPlanPanel)obj.GetComponent(typeof(DoctorEditPlanPanel));
+                    GameObject.Find("Canvas/DoctorCheckPlanPanelNew/SearchButton").GetComponent<Button>().interactable = false;
+                    GameObject.Find("Canvas/DoctorCheckPlanPanelNew/AddPlanButton").GetComponent<Button>().interactable = false;
+                    GameObject.Find("Canvas/DoctorCheckPlanPanelNew/DeletePlanButton").GetComponent<Button>().interactable = false;
+                    GameObject.Find("Canvas/DoctorCheckPlanPanelNew/BackButton").GetComponent<Button>().interactable = false;
+                    //GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorEditPlanPanel");
+                    SmallPanel.SetActive(true);
+                    //SmallPanel.GetComponent<DoctorEditPlanPanel>().Start();
+                    //GameObject obj = GameObject.Find("Canvas/DoctorEditPlanPanel");
+
+                    DoctorEditPlanPanel panel = (DoctorEditPlanPanel)SmallPanel.GetComponent(typeof(DoctorEditPlanPanel));
                     panel.Start();
                 }
                 );
