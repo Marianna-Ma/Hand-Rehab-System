@@ -14,12 +14,6 @@ public class DoctorChangeInfoPanel : MonoBehaviour {
 		
 	}
 
-    public void ClickChangeInfoPanel()
-    {
-        //Debug.Log(GameObject.Find("canvas"))
-        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorStartPanel");
-    }
-
     public void ClickCancelChangePanel()
     {
         //Debug.Log(GameObject.Find("canvas"))

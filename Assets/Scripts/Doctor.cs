@@ -32,7 +32,7 @@ public class Doctor : MonoBehaviour {
 	/// <summary>
 	/// 按下UpdatePswd按钮
 	/// </summary>
-	public void UpdatePassword(string first_pswd, string second_pswd) {
+	public int UpdatePassword(string first_pswd, string second_pswd) {
 		string userID = "";
 		if (PlayerPrefs.HasKey("userID")) {
 			userID = PlayerPrefs.GetString ("userID");
@@ -50,6 +50,8 @@ public class Doctor : MonoBehaviour {
 		if (firstPswd.Length < 6 || firstPswd.Length > 20) {
 			flag = 0;
 			Debug.Log ("密码长度应为6~20个字符");
+			mysql.Close ();
+			return 1;
 		}
 		else {
 			string query = "";
@@ -66,10 +68,14 @@ public class Doctor : MonoBehaviour {
 			if (beforePswd == firstPswd) {
 				flag = 0;
 				Debug.Log ("新密码不可与原密码相同");
+				mysql.Close();
+				return 2;
 			} else {
 				if (firstPswd != secondPswd) {
 					flag = 0;
 					Debug.Log ("两次密码不一致");
+					mysql.Close();
+					return 3;
 				} else {
 					flag = 1;
 				}
@@ -87,12 +93,13 @@ public class Doctor : MonoBehaviour {
 			Debug.Log ("修改密码成功，新密码为：" + firstPswd);
 		}
 		mysql.Close ();
+		return 0;
 	}
 
 	/// <summary>
 	/// 按下Change Info按钮
 	/// </summary>
-	public void ChangeInfo(string dc_name, string dc_sex, string dc_pro, string dc_tele) {
+	public int ChangeInfo(string dc_name, string dc_sex, string dc_pro, string dc_tele) {
 		string dcID = "";
 		if (PlayerPrefs.HasKey("userID")) {
 			dcID = PlayerPrefs.GetString ("userID");
@@ -106,10 +113,17 @@ public class Doctor : MonoBehaviour {
 
 		mysql = new MySqlAccess(host, port, userName, password, databaseName);
 		mysql.OpenSql ();
-		string query = "update doc set dc_name = '" + dcName + "', dc_sex = '" + dcSex + "', dc_pro = '" + dcPro + "', dc_tele = '" + dcTele + "' where dc_id = '" + dcID + "'";
-		DataSet ds = mysql.QuerySet (query);
-
+		string query1 = "select * from doc where dc_id = '" + dcID + "'";
+		DataSet ds1 = mysql.QuerySet(query1);
+		if (ds1.Tables [0].Rows.Count == 0) {
+			mysql.Close ();
+			return 1;
+		} else {
+			string query = "update doc set dc_name = '" + dcName + "', dc_sex = '" + dcSex + "', dc_pro = '" + dcPro + "', dc_tele = '" + dcTele + "' where dc_id = '" + dcID + "'";
+			DataSet ds = mysql.QuerySet (query);
+		}
 		mysql.Close ();
+		return 0;
 	}
 
 
@@ -234,7 +248,7 @@ public class Doctor : MonoBehaviour {
 		if (PlayerPrefs.HasKey("selectPatientID")) {
 			ptID = PlayerPrefs.GetString ("selectPatientID");
 		}
-		Debug.Log ("ptID" + ptID);
+		Debug.Log ("ptID " + ptID);
 
 		string nowTime;
 		nowTime = DateTime.Now.ToString ("yyyyMMdd");
@@ -253,7 +267,7 @@ public class Doctor : MonoBehaviour {
 			mysql = new MySqlAccess(host, port, userName, password, databaseName);
 			mysql.OpenSql ();
 
-			string query = "select rec_date, ac_id, ac_name, rec_hand, rec_test from rec,act where ac_id = rec_actID and rec_ptID = '" + ptID + "' and rec_date >= '" + start_date + "' and rec_date <= '" + end_date + "'";
+			string query = "select rec_date, ac_id, ac_name, rec_hand, rec_test, rec_link from rec,act where ac_id = rec_actID and rec_ptID = '" + ptID + "' and rec_date >= '" + start_date + "' and rec_date <= '" + end_date + "'";
 			DataSet ds = mysql.QuerySet (query);
 			DataTable table = ds.Tables [0];
 			int row_num = table.Rows.Count;

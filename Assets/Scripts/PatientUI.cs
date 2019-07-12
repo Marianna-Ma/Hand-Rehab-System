@@ -93,23 +93,23 @@ public class PatientUI : MonoBehaviour, IPointerClickHandler {
 
 
 			GameObject table = GameObject.Find ("Canvas/PatientHistoryRecordPanel/selectableRecordsScrollView/Viewport/Content");
-			GameObject selectableRecord = GameObject.Find ("Canvas/PatientHistoryRecordPanel/selectableRecordsScrollView/Viewport/Content/selectableRecord");
+			GameObject recordButton = GameObject.Find ("Canvas/PatientHistoryRecordPanel/selectableRecordsScrollView/Viewport/Content/recordButton");
 			GameObject noRecord = GameObject.Find ("Canvas/PatientHistoryRecordPanel/selectableRecordsScrollView/Viewport/Content/noRecord");
-			selectableRecord.SetActive (false);
+			recordButton.SetActive (false);
 			noRecord.SetActive (true);
 			Debug.Log ("row " + records.GetLength(0));
 			Debug.Log ("col " + (records.GetUpperBound (records.Rank - 1) + 1));
-			if (records.GetUpperBound (records.Rank - 1) + 1 == 5) {
+			if (records.GetUpperBound (records.Rank - 1) + 1 == 6) {
 				noRecord.SetActive (false);
 				for (int i = 0; i < records.GetLength (0); i++) {
 					GameObject row = GameObject.Instantiate (historyRecordsPrefab, table.transform.position, table.transform.rotation) as GameObject;
 					row.name = "record" + (i + 1);
 					row.transform.SetParent (table.transform);
 					row.transform.localScale = Vector3.one;
-					ToggleInfo toggleInfo = new ToggleInfo();
-					toggleInfo.id = records[i, 0] + records[i,1] + records[i,3];
-					toggleInfo.status = false;
-					row.transform.Find("Toggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => chooseRecord(toggleInfo));
+//					ToggleInfo toggleInfo = new ToggleInfo();
+//					toggleInfo.id = records[i, 0] + records[i,1] + records[i,3];
+//					toggleInfo.status = false;
+//					row.transform.Find("Toggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => chooseRecord(toggleInfo));
 					row.transform.Find ("recordDate").GetComponent<Text> ().text = records [i, 0];
 					row.transform.Find ("actionID").GetComponent<Text> ().text = records [i, 1];
 					row.transform.Find ("actionName").GetComponent<Text> ().text = records [i, 2];
@@ -130,6 +130,18 @@ public class PatientUI : MonoBehaviour, IPointerClickHandler {
 
 					row.transform.Translate (230, -15 - i * 25, 0);
 					row.SetActive (true);
+
+					ButtonInfo info = new ButtonInfo();
+					info.id = records[i, 5];
+					info.obj = row.transform.GetComponent<Button>().gameObject;
+					row.transform.GetComponent<Button>().onClick.AddListener(
+						delegate ()
+						{
+							selectAction(info);
+							GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientReplayPanel");
+						}
+					);
+
 
 				}
 			} else {
@@ -220,42 +232,48 @@ public class PatientUI : MonoBehaviour, IPointerClickHandler {
 		return retDate;
 	}
 
-	void chooseRecord(ToggleInfo info)
+	void selectAction(ButtonInfo info)
 	{
-		info.status = !info.status;
-		Debug.Log("info info: " + info.id);
-		Debug.Log("info status: " + info.status);
-		if (info.status == true) {
-			selectRecordList.Add (info.id);
-
-			int num = 0;
-			if (PlayerPrefs.HasKey("selectRecordNum")) {
-				num = PlayerPrefs.GetInt ("selectRecordNum") + 1;
-			}
-			PlayerPrefs.SetInt ("selectRecordNum", num);
-			PlayerPrefs.SetString ("selectRecord", info.id);
-
-
-		} else {
-			selectRecordList.Remove(info.id);
-
-			int num = 0;
-			if (PlayerPrefs.HasKey("selectRecordNum")) {
-				num = PlayerPrefs.GetInt ("selectRecordNum") - 1;
-			}
-			PlayerPrefs.SetInt ("selectRecordNum", num);
-
-		}
-		Debug.Log ("aaa列表长度" + selectRecordList.Count);
-		foreach (string id in selectRecordList)
-			Debug.Log(id);
+		Debug.Log("Clicked");
+		PlayerPrefs.SetString("selectRecordLink", info.id);
 	}
 
-	public void getSelectRecordList(List<string> newList) {
-		Debug.Log ("*************" + selectRecordList.Count);
-		foreach (string info in selectRecordList) {
-			Debug.Log (info);
-			newList.Add (info);
-		}
-	}
+//	void chooseRecord(ToggleInfo info)
+//	{
+//		info.status = !info.status;
+//		Debug.Log("info info: " + info.id);
+//		Debug.Log("info status: " + info.status);
+//		if (info.status == true) {
+//			selectRecordList.Add (info.id);
+//
+//			int num = 0;
+//			if (PlayerPrefs.HasKey("selectRecordNum")) {
+//				num = PlayerPrefs.GetInt ("selectRecordNum") + 1;
+//			}
+//			PlayerPrefs.SetInt ("selectRecordNum", num);
+//			PlayerPrefs.SetString ("selectRecord", info.id);
+//
+//
+//		} else {
+//			selectRecordList.Remove(info.id);
+//
+//			int num = 0;
+//			if (PlayerPrefs.HasKey("selectRecordNum")) {
+//				num = PlayerPrefs.GetInt ("selectRecordNum") - 1;
+//			}
+//			PlayerPrefs.SetInt ("selectRecordNum", num);
+//
+//		}
+//		Debug.Log ("aaa列表长度" + selectRecordList.Count);
+//		foreach (string id in selectRecordList)
+//			Debug.Log(id);
+//	}
+//
+//	public void getSelectRecordList(List<string> newList) {
+//		Debug.Log ("*************" + selectRecordList.Count);
+//		foreach (string info in selectRecordList) {
+//			Debug.Log (info);
+//			newList.Add (info);
+//		}
+//	}
 }

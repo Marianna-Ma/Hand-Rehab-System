@@ -21,6 +21,8 @@ public class CreatePatientPanel : MonoBehaviour
     Doctor doctor;
     public GameObject PatientData_Prefab;
 
+	public GameObject SmallPanel;
+
     void Awake()
     {
 
@@ -75,10 +77,11 @@ public class CreatePatientPanel : MonoBehaviour
                 delegate ()
                 {
                     selectAction(info);
-                    GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPlanPanelNew");
-                    GameObject obj = GameObject.Find("Canvas/DoctorCheckPlanPanelNew");
-                    CreatePlanTable panel = (CreatePlanTable)obj.GetComponent(typeof(CreatePlanTable));
-                    panel.Start();
+					SmallPanel.SetActive (true);
+//                    GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorPatientPlanOrRecord");
+//                    GameObject obj = GameObject.Find("Canvas/DoctorCheckPlanPanelNew");
+//                    CreatePlanTable panel = (CreatePlanTable)obj.GetComponent(typeof(CreatePlanTable));
+//                    panel.Start();
                 }
                 );
             row.transform.Find("PatientSex").GetComponent<Text>().text = (string)patientTable.Rows[i][2];

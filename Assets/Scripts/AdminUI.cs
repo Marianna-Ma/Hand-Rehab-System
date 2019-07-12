@@ -16,7 +16,7 @@ public class AdminUI : MonoBehaviour, IPointerClickHandler {
 	// 添加医生 面板的输入框
 	public InputField dcIDField;
 	public InputField dcNameField;
-	public InputField dcSexField;
+	//public InputField dcSexField;
 	public InputField dcProField;
 	public InputField dcTeleField;
 
@@ -43,22 +43,48 @@ public class AdminUI : MonoBehaviour, IPointerClickHandler {
 	}
 
 	public void OnPointerClick(PointerEventData eventData) {
-		if (eventData.pointerPress.name == "updatePswdButton") 	//如果当前按下的按钮是修改密码按钮
-			test.UpdatePassword(adm_firstPswdField.text.ToString(), adm_secondPswdField.text.ToString());
+		if (eventData.pointerPress.name == "updatePswdButton") { 	//如果当前按下的按钮是修改密码按钮
+			int flag = test.UpdatePassword (adm_firstPswdField.text.ToString (), adm_secondPswdField.text.ToString ());
+			if (flag == 1)
+				Messagebox.MessageBox(IntPtr.Zero, "密码长度应为6~20个字符！", "失败", 0);
+			else if (flag == 2)
+				Messagebox.MessageBox(IntPtr.Zero, "新密码不可与原密码相同！", "失败", 0);
+			else if (flag == 3)
+				Messagebox.MessageBox(IntPtr.Zero, "两次密码不一致！", "失败", 0);
+			else {
+				Messagebox.MessageBox(IntPtr.Zero, "修改密码成功！", "成功", 0);
+				adm_firstPswdField.text = "";
+				adm_secondPswdField.text = "";
+				GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminStartPanel");
+			}
+			adm_firstPswdField.text = "";
+			adm_secondPswdField.text = "";
+		}
 		if (eventData.pointerPress.name == "addDoctorButton")   //如果当前按下的按钮是添加医生按钮
         {
-            int status = test.AddDoctor(dcIDField.text.ToString(), dcNameField.text.ToString(), dcSexField.text.ToString(), dcProField.text.ToString(), dcTeleField.text.ToString());
-            if (status == 1)
-                Messagebox.MessageBox(IntPtr.Zero, "医生账号或姓名不能为空！", "失败", 0);
-            else if (status == 2)
-                Messagebox.MessageBox(IntPtr.Zero, "医生账号不在人员表中！", "失败", 0);
-            else if (status == 3)
-                Messagebox.MessageBox(IntPtr.Zero, "医生账号已存在！", "失败", 0);
-            else
-                Messagebox.MessageBox(IntPtr.Zero, "添加医生成功！", "成功", 0);
-            GameObject obj = GameObject.Find("Canvas/AdminCheckDoctorPanel");
-            CreateDocPanel panel = (CreateDocPanel)obj.GetComponent(typeof(CreateDocPanel));
-            panel.Start();
+			Dropdown select_sex_item = GameObject.Find("Canvas/AdminAddDoctorPanel/SexDropDown").GetComponent<Dropdown>();
+			string select_sex = select_sex_item.options[select_sex_item.value].text;
+			int status = test.AddDoctor(dcIDField.text.ToString(), dcNameField.text.ToString(), select_sex, dcProField.text.ToString(), dcTeleField.text.ToString());
+			if (status == 1)
+				Messagebox.MessageBox (IntPtr.Zero, "医生账号或姓名不能为空！", "失败", 0);
+			else if (status == 2)
+				Messagebox.MessageBox (IntPtr.Zero, "医生账号不在人员表中！", "失败", 0);
+			else if (status == 3)
+				Messagebox.MessageBox (IntPtr.Zero, "医生账号已存在！", "失败", 0);
+			else if (status == 4)
+				Messagebox.MessageBox (IntPtr.Zero, "账号类型错误！", "失败", 0);
+			else {
+				Messagebox.MessageBox (IntPtr.Zero, "添加医生成功！", "成功", 0);
+				GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminCheckDoctorPanel");
+				GameObject.Find ("Canvas/AdminCheckDoctorPanel").GetComponent<CreateDocPanel> ().Start ();
+//				GameObject obj = GameObject.Find ("Canvas/AdminCheckDoctorPanel");
+//				CreateDocPanel panel = (CreateDocPanel)obj.GetComponent (typeof(CreateDocPanel));
+//				panel.Start ();
+			}
+			dcIDField.text = "";
+			dcNameField.text = "";
+			dcProField.text = "";
+			dcTeleField.text = "";
         }
 
         if (eventData.pointerPress.name == "deleteDoctorButton")//如果当前按下的按钮是删除患者按钮
@@ -73,8 +99,11 @@ public class AdminUI : MonoBehaviour, IPointerClickHandler {
                 Messagebox.MessageBox(IntPtr.Zero, "删除医生失败！", "失败", 0);
             else
                 Messagebox.MessageBox(IntPtr.Zero, "删除医生成功！", "成功", 0);
-
-
+			GameObject.Find ("Canvas/AdminDeleteDoctorPanel").SetActive (false);
+			//SmallPanel.SetActive(false);
+			GameObject.Find("AddDoctorButton").GetComponent<Button>().interactable = true;
+			GameObject.Find("DeleteDoctorButton").GetComponent<Button>().interactable = true;
+			GameObject.Find("BackButton").GetComponent<Button>().interactable = true;
             GameObject.Find("AdminCheckDoctorPanel").GetComponent<CreateDocPanel>().Start();
 
             

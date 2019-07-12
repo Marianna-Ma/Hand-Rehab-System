@@ -32,7 +32,7 @@ public class Admin : MonoBehaviour {
 	/// <summary>
 	/// 按下UpdatePswd按钮
 	/// </summary>
-	public void UpdatePassword(string first_pswd, string second_pswd) {
+	public int UpdatePassword(string first_pswd, string second_pswd) {
 		string userID = "";
 		if (PlayerPrefs.HasKey("userID")) {
 			userID = PlayerPrefs.GetString ("userID");
@@ -50,6 +50,8 @@ public class Admin : MonoBehaviour {
 		if (firstPswd.Length < 6 || firstPswd.Length > 20) {
 			flag = 0;
 			Debug.Log ("密码长度应为6~20个字符");
+			mysql.Close ();
+			return 1;
 		}
 		else {
 			string query = "";
@@ -66,10 +68,14 @@ public class Admin : MonoBehaviour {
 			if (beforePswd == firstPswd) {
 				flag = 0;
 				Debug.Log ("新密码不可与原密码相同");
+				mysql.Close ();
+				return 2;
 			} else {
 				if (firstPswd != secondPswd) {
 					flag = 0;
 					Debug.Log ("两次密码不一致");
+					mysql.Close ();
+					return 3;
 				} else {
 					flag = 1;
 				}
@@ -88,6 +94,7 @@ public class Admin : MonoBehaviour {
 			Debug.Log ("修改密码成功，新密码为：" + firstPswd);
 		}
 		mysql.Close ();
+		return 0;
 	}
 
 
@@ -126,6 +133,12 @@ public class Admin : MonoBehaviour {
 				Debug.Log ("医生编号不在人员表中");
                 mysql.Close();
                 return 2;
+			}
+			if (dcID [0] != '2') {
+				flag = 0;
+				Debug.Log ("账号类型错误");
+				mysql.Close ();
+				return 4;
 			}
 		}
 		if (flag == 1) {
