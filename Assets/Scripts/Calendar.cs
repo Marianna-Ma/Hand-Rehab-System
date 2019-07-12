@@ -332,9 +332,11 @@ namespace SpringGUI
     {
         public DateTime DateTime { get; set; }
         private Text _text = null;
+
         protected override void Awake( )
         {
             _text = transform.Find("Text").GetComponent<Text>();
+            _text.transform.position = new Vector3(_text.transform.position.x, _text.transform.position.y, 0);
         }
         public void SetDay( DateTime dateTime , E_DisplayType displayType , Color fontColor )
         {

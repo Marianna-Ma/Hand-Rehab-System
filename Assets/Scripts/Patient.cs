@@ -135,7 +135,7 @@ public class Patient : MonoBehaviour {
 			mysql = new MySqlAccess(host, port, userName, password, databaseName);
 			mysql.OpenSql ();
 		
-			string query = "select rec_date, ac_id, ac_name, rec_hand, rec_test from rec,act where ac_id = rec_actID and rec_ptID = '" + ptID + "' and rec_date >= '" + start_date + "' and rec_date <= '" + end_date + "'";
+			string query = "select rec_date, ac_id, ac_name, rec_hand, rec_test, rec_link from rec,act where ac_id = rec_actID and rec_ptID = '" + ptID + "' and rec_date >= '" + start_date + "' and rec_date <= '" + end_date + "'";
 			DataSet ds = mysql.QuerySet (query);
 			DataTable table = ds.Tables [0];
 			int row_num = table.Rows.Count;
