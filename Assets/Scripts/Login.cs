@@ -25,7 +25,7 @@ public class Login : MonoBehaviour, IPointerClickHandler {
 	private void Start() {
 //		loginMessage = GameObject.FindGameObjectWithTag("LoginMessage").GetComponent<Text>();
 		InitialAdmin ();
-		InitialStandardLibrary ();
+		//InitialStandardLibrary ();
 	}
 	
 	public void OnPointerClick(PointerEventData eventData) {
