@@ -246,7 +246,7 @@ public class StandardActionLibrary : MonoBehaviour {
         foreach(string id in id_list)
         {
             string querySql = "select * from rec where rec_actID = '" + id + "'";
-            DataSet ds = mysql.SimpleSql(querySql);
+			DataSet ds = mysql.SimpleSql(querySql);
             if(ds.Tables[0].Rows.Count != 0)
             {
                 deleteStandardAction(id, 1);
@@ -377,7 +377,7 @@ public class StandardActionLibrary : MonoBehaviour {
             Debug.Log("flag: " + flag_S);
             Messagebox.MessageBox(IntPtr.Zero, "录制动作成功！", "成功", 0);
             Destroy(hd.GetComponent<SaveHandData>());
-            GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AddStdActionLibraryPanel");
+            //GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AddStdActionLibraryPanel");
 
         }
 

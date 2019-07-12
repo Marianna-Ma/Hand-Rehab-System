@@ -30,6 +30,8 @@ public class CheckStdActionLibraryPanel : MonoBehaviour, IPointerClickHandler{
             Debug.Log(next_id);
 
             GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AddStdActionLibraryPanel");
+			GameObject.Find("Canvas/AddStdActionLibraryPanel").GetComponent<StdActionLibraryUI>().Start();
+//			GameObject.Find ("AddStdActionLibraryPanel").GetComponent<StdActionLibraryUI> ().Start ();
         }
         
         if (eventData.pointerPress.name == "BackButton")

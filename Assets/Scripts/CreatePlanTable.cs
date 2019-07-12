@@ -50,6 +50,7 @@ public class CreatePlanTable : MonoBehaviour {
             }
         }
         string ID = PlayerPrefs.GetString("selectPatientID");
+		GameObject.Find ("Canvas/DoctorCheckPlanPanelNew/NameText").GetComponent<Text> ().text = ID;
         currentTP = TrainingPlan.findOnesTrainingPlan(ID); //TODO：获得病人编号
        
         if (currentTP.Tables[0].Rows.Count > 0)

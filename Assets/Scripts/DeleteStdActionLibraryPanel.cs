@@ -56,6 +56,6 @@ public class DeleteStdActionLibraryPanel : MonoBehaviour {
         GameObject.Find("AddActionButton").GetComponent<Button>().interactable = true;
         GameObject.Find("DeleteActionButton").GetComponent<Button>().interactable = true;
         GameObject.Find("BackButton").GetComponent<Button>().interactable = true;
-        GameObject.Find("CheckStdActionLibraryPanel").GetComponent<CreateDocPanel>().Start();
+        GameObject.Find("CheckStdActionLibraryPanel").GetComponent<CreateStdActionTable>().Start();
     }
 }

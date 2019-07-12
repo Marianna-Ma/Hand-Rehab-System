@@ -46,6 +46,7 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 		PlayerPrefs.SetInt ("selectRecordNum", 0);
 		PlayerPrefs.SetString ("selectRecord", "");
 	}
+<<<<<<< HEAD
 	
 	public void OnPointerClick(PointerEventData eventData) {
 		if (eventData.pointerPress.name == "updatePswdButton") {	//如果当前按下的按钮是修改密码按钮
@@ -83,6 +84,14 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 				GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorStartPanel");
 			}
 		}
+=======
+
+    public void OnPointerClick(PointerEventData eventData) {
+        if (eventData.pointerPress.name == "updatePswdButton")  //如果当前按下的按钮是修改密码按钮
+            test.UpdatePassword(dc_firstPswdField.text.ToString(), dc_secondPswdField.text.ToString());
+        if (eventData.pointerPress.name == "changeInfoButton")
+            test.ChangeInfo(dcNameField.text.ToString(), dcSexField.text.ToString(), dcProField.text.ToString(), dcTeleField.text.ToString());
+>>>>>>> e95ab496ce29c3711098d7e32051d445e7cfbd47
         if (eventData.pointerPress.name == "addPatientButton")  //如果当前按下的按钮是添加患者按钮
         {
             Dropdown select_sex_item = GameObject.Find("Canvas/DoctorAddPatientPanel/SexDropDown").GetComponent<Dropdown>();
@@ -95,9 +104,14 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
                 Messagebox.MessageBox(IntPtr.Zero, "患者账号不在人员表中！", "失败", 0);
             else if (status == 3)
                 Messagebox.MessageBox(IntPtr.Zero, "患者账号已存在！", "失败", 0);
+<<<<<<< HEAD
 			else if (status == 4)
 				Messagebox.MessageBox (IntPtr.Zero, "账号类型错误！", "失败", 0);
-			else {
+            else 
+=======
+            else
+            {
+>>>>>>> e95ab496ce29c3711098d7e32051d445e7cfbd47
                 Messagebox.MessageBox(IntPtr.Zero, "添加患者成功！", "成功", 0);
                 GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPatientPanelNew");
                 GameObject.Find("Canvas/DoctorCheckPatientPanelNew").GetComponent<CreatePatientPanel>().Start();
@@ -107,8 +121,13 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
             GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorAddPatientPanel");
 
         }
+        //if (eventData.pointerPress.name == "deletePatientButton") {  //如果当前按下的按钮是删除患者按钮
+            
+        //}
+            
+        //test.DeletePatient ();
 
-		if (eventData.pointerPress.name == "selectDateButton") {
+        if (eventData.pointerPress.name == "selectDateButton") {
 			string startDate = startDateText.text.ToString ();
 			string endDate = endDateText.text.ToString ();
 			string startDateString = changeDateFormat (startDate);
