@@ -37,7 +37,7 @@ public class Login : MonoBehaviour, IPointerClickHandler {
 	{
 		mysql = new MySqlAccess(host, port, userName, password, databaseName);
 		mysql.OpenSql();
-		string query = "select ac_id, ac_pic, ac_left, ac_right from act";
+		string query = "select ac_id, ac_pic, ac_left, ac_right from act where ac_ex = 1";
 		DataSet ds = mysql.SimpleSql(query);
 		if (ds.Tables[0].Rows.Count != 0)
 		{
@@ -97,7 +97,7 @@ public class Login : MonoBehaviour, IPointerClickHandler {
 		string pswd = passwordNameField.text;
 		if (id [0] == '1') {
 			//管理员
-			string query = "select * from adm where adm_id = " + id + " and adm_pswd = " + pswd;
+			string query = "select * from adm where adm_id = '" + id + "' and adm_pswd = '" + pswd + "'";
 			DataSet ds = mysql.QuerySet (query);
 			DataTable table = ds.Tables [0];
 			if (table.Rows.Count != 0) {
@@ -106,11 +106,14 @@ public class Login : MonoBehaviour, IPointerClickHandler {
                 GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AdminStartPanel");
             } else {
 				Debug.Log ("管理员，登录失败，没有此账号或密码错误！");
+				userNameField.text = "";
+				passwordNameField.text = "";
+				Messagebox.MessageBox(IntPtr.Zero, "账号或密码错误！", "失败", 0);
 			}
 
 		} else if (id [0] == '2') {
 			//医生
-			string query = "select * from doc where dc_id = " + id + " and dc_pswd = " + pswd;
+			string query = "select * from doc where dc_id = '" + id + "' and dc_pswd = '" + pswd + "'";
 			DataSet ds = mysql.QuerySet (query);
 			DataTable table = ds.Tables [0];
 			if (table.Rows.Count != 0) {
@@ -119,10 +122,13 @@ public class Login : MonoBehaviour, IPointerClickHandler {
                 GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorStartPanel");
             } else {
 				Debug.Log ("医生，登录失败，没有此账号或密码错误！");
+				userNameField.text = "";
+				passwordNameField.text = "";
+				Messagebox.MessageBox(IntPtr.Zero, "账号或密码错误！", "失败", 0);
 			}
 		} else if (id [0] == '3') {
 			//患者
-			string query = "select * from pat where pt_id = " + id + " and pt_pswd = " + pswd;
+			string query = "select * from pat where pt_id = '" + id + "' and pt_pswd = '" + pswd + "'";
 			DataSet ds = mysql.QuerySet (query);
 			DataTable table = ds.Tables [0];
 			if (table.Rows.Count != 0) {
@@ -131,9 +137,15 @@ public class Login : MonoBehaviour, IPointerClickHandler {
                 GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientStartPanel");
             } else {
 				Debug.Log ("患者，登录失败，没有此账号或密码错误！");
+				userNameField.text = "";
+				passwordNameField.text = "";
+				Messagebox.MessageBox(IntPtr.Zero, "账号或密码错误！", "失败", 0);
 			}
 		} else {
 			Debug.Log ("用户账号类型错误！");
+			userNameField.text = "";
+			passwordNameField.text = "";
+			Messagebox.MessageBox(IntPtr.Zero, "账号错误！", "失败", 0);
 		}
 		mysql.Close();
 	}

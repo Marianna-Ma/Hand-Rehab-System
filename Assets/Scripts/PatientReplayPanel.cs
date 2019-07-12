@@ -26,6 +26,6 @@ public class PatientReplayPanel : MonoBehaviour {
 
     public void ClickBackButton()
     {
-
+        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientHistoryRecordPanel");
     }
 }

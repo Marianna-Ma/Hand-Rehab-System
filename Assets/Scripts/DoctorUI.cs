@@ -14,24 +14,25 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 	public InputField dc_secondPswdField;
 	// 修改信息 面板的输入框
 	public InputField dcNameField;
-	public InputField dcSexField;
+	//public InputField dcSexField;
 	public InputField dcProField;
 	public InputField dcTeleField;
 	// 添加患者 面板的输入框
 	public InputField ptIDField;
 	public InputField ptNameField;
-	public InputField ptSexField;
+	//public InputField ptSexField;
 	public InputField ptTeleField;
 
 	// 查看历史记录
 	public Text startDateText;
 	public Text endDateText;
 	public Text noRecord;
-	public GameObject historyRecordsPrefab;//表头预设
+	//public GameObject historyRecordsPrefab;//表头预设
 	public List<string> selectRecordList = new List<string>(); // 保存哪些toggle被选择
+    public List<string> selectPatientList = new List<string>();
 
 
-	public static string host = "119.3.231.171";		//IP地址
+    public static string host = "119.3.231.171";		//IP地址
 	public static string port = "3306";					//端口号
 	public static string userName = "admin";			//用户名
 	public static string password = "Rehabsys@2019";	//密码
@@ -45,30 +46,88 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 		PlayerPrefs.SetInt ("selectRecordNum", 0);
 		PlayerPrefs.SetString ("selectRecord", "");
 	}
+<<<<<<< HEAD
 	
 	public void OnPointerClick(PointerEventData eventData) {
-		if (eventData.pointerPress.name == "updatePswdButton")	//如果当前按下的按钮是修改密码按钮
-			test.UpdatePassword (dc_firstPswdField.text.ToString(), dc_secondPswdField.text.ToString());
-		if (eventData.pointerPress.name == "changeInfoButton")
-			test.ChangeInfo (dcNameField.text.ToString(), dcSexField.text.ToString(), dcProField.text.ToString(), dcTeleField.text.ToString());
+		if (eventData.pointerPress.name == "updatePswdButton") {	//如果当前按下的按钮是修改密码按钮
+			int flag = test.UpdatePassword (dc_firstPswdField.text.ToString (), dc_secondPswdField.text.ToString ());
+			if (flag == 1)
+				Messagebox.MessageBox(IntPtr.Zero, "密码长度应为6~20个字符！", "失败", 0);
+			else if (flag == 2)
+				Messagebox.MessageBox(IntPtr.Zero, "新密码不可与原密码相同！", "失败", 0);
+			else if (flag == 3)
+				Messagebox.MessageBox(IntPtr.Zero, "两次密码不一致！", "失败", 0);
+			else {
+				Messagebox.MessageBox(IntPtr.Zero, "修改密码成功！", "成功", 0);
+				dc_firstPswdField.text = "";
+				dc_secondPswdField.text = "";
+				GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorStartPanel");
+			}
+			dc_firstPswdField.text = "";
+			dc_secondPswdField.text = "";
+		}
+		if (eventData.pointerPress.name == "changeInfoButton") {
+			Dropdown select_sex_item = GameObject.Find("Canvas/DoctorChangeInfoPanel/SexDropDown").GetComponent<Dropdown>();
+			string select_sex = select_sex_item.options[select_sex_item.value].text;
+			int flag = test.ChangeInfo (dcNameField.text.ToString (), select_sex, dcProField.text.ToString (), dcTeleField.text.ToString ());
+			if (flag == 1) {
+				Messagebox.MessageBox(IntPtr.Zero, "修改个人信息失败！", "失败", 0);
+				dcNameField.text = "";
+				dcProField.text = "";
+				dcTeleField.text = "";
+			}
+			else {
+				Messagebox.MessageBox(IntPtr.Zero, "修改个人信息成功！", "成功", 0);
+				dcNameField.text = "";
+				dcProField.text = "";
+				dcTeleField.text = "";
+				GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorStartPanel");
+			}
+		}
+=======
+
+    public void OnPointerClick(PointerEventData eventData) {
+        if (eventData.pointerPress.name == "updatePswdButton")  //如果当前按下的按钮是修改密码按钮
+            test.UpdatePassword(dc_firstPswdField.text.ToString(), dc_secondPswdField.text.ToString());
+        if (eventData.pointerPress.name == "changeInfoButton")
+            test.ChangeInfo(dcNameField.text.ToString(), dcSexField.text.ToString(), dcProField.text.ToString(), dcTeleField.text.ToString());
+>>>>>>> e95ab496ce29c3711098d7e32051d445e7cfbd47
         if (eventData.pointerPress.name == "addPatientButton")  //如果当前按下的按钮是添加患者按钮
         {
-            int status = test.AddPatient(ptIDField.text.ToString(), ptNameField.text.ToString(), ptSexField.text.ToString(), ptTeleField.text.ToString());
-            if(status == 1)
+            Dropdown select_sex_item = GameObject.Find("Canvas/DoctorAddPatientPanel/SexDropDown").GetComponent<Dropdown>();
+            string select_sex = select_sex_item.options[select_sex_item.value].text;
+            Debug.Log("****************************8 " + select_sex);
+            int status = test.AddPatient(ptIDField.text.ToString(), ptNameField.text.ToString(), select_sex, ptTeleField.text.ToString());
+            if (status == 1)
                 Messagebox.MessageBox(IntPtr.Zero, "患者账号或姓名不能为空！", "失败", 0);
-            else if(status == 2)
+            else if (status == 2)
                 Messagebox.MessageBox(IntPtr.Zero, "患者账号不在人员表中！", "失败", 0);
-            else if(status == 3)
+            else if (status == 3)
                 Messagebox.MessageBox(IntPtr.Zero, "患者账号已存在！", "失败", 0);
+<<<<<<< HEAD
+			else if (status == 4)
+				Messagebox.MessageBox (IntPtr.Zero, "账号类型错误！", "失败", 0);
             else 
+=======
+            else
+            {
+>>>>>>> e95ab496ce29c3711098d7e32051d445e7cfbd47
                 Messagebox.MessageBox(IntPtr.Zero, "添加患者成功！", "成功", 0);
+                GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPatientPanelNew");
+                GameObject.Find("Canvas/DoctorCheckPatientPanelNew").GetComponent<CreatePatientPanel>().Start();
+                return;
+            }
+                
             GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorAddPatientPanel");
 
         }
-        if (eventData.pointerPress.name == "deletePatientButton")	//如果当前按下的按钮是删除患者按钮
-			test.DeletePatient ();
+        //if (eventData.pointerPress.name == "deletePatientButton") {  //如果当前按下的按钮是删除患者按钮
+            
+        //}
+            
+        //test.DeletePatient ();
 
-		if (eventData.pointerPress.name == "selectDateButton") {
+        if (eventData.pointerPress.name == "selectDateButton") {
 			string startDate = startDateText.text.ToString ();
 			string endDate = endDateText.text.ToString ();
 			string startDateString = changeDateFormat (startDate);
@@ -77,23 +136,25 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 
 
 			GameObject table = GameObject.Find ("Canvas/DoctorHistoryRecordPanel/selectableRecordsScrollView/Viewport/Content");
-			GameObject selectableRecord = GameObject.Find ("Canvas/DoctorHistoryRecordPanel/selectableRecordsScrollView/Viewport/Content/selectableRecord");
+			GameObject historyRecordsPrefab = GameObject.Find ("Canvas/DoctorHistoryRecordPanel/selectableRecordsScrollView/Viewport/Content/recordButton");
+			GameObject recordButton = GameObject.Find ("Canvas/DoctorHistoryRecordPanel/selectableRecordsScrollView/Viewport/Content/recordButton");
 			GameObject noRecord = GameObject.Find ("Canvas/DoctorHistoryRecordPanel/selectableRecordsScrollView/Viewport/Content/noRecord");
-			selectableRecord.SetActive (false);
+			recordButton.SetActive (false);
 			noRecord.SetActive (true);
 			Debug.Log ("row " + records.GetLength(0));
 			Debug.Log ("col " + (records.GetUpperBound (records.Rank - 1) + 1));
-			if (records.GetUpperBound (records.Rank - 1) + 1 == 5) {
+			if (records.GetUpperBound (records.Rank - 1) + 1 == 6) {
 				noRecord.SetActive (false);
 				for (int i = 0; i < records.GetLength (0); i++) {
+					Debug.Log ("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 					GameObject row = GameObject.Instantiate (historyRecordsPrefab, table.transform.position, table.transform.rotation) as GameObject;
 					row.name = "record" + (i + 1);
 					row.transform.SetParent (table.transform);
 					row.transform.localScale = Vector3.one;
-					ToggleInfo toggleInfo = new ToggleInfo();
-					toggleInfo.id = records[i, 0] + records[i,1] + records[i,3];
-					toggleInfo.status = false;
-					row.transform.Find("Toggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => chooseRecord(toggleInfo));
+//					ToggleInfo toggleInfo = new ToggleInfo();
+//					toggleInfo.id = records[i, 0] + records[i,1] + records[i,3];
+//					toggleInfo.status = false;
+//					row.transform.Find("Toggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => chooseRecord(toggleInfo));
 					row.transform.Find ("recordDate").GetComponent<Text> ().text = records [i, 0];
 					row.transform.Find ("actionID").GetComponent<Text> ().text = records [i, 1];
 					row.transform.Find ("actionName").GetComponent<Text> ().text = records [i, 2];
@@ -101,17 +162,32 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 						row.transform.Find ("handIndex").GetComponent<Text> ().text = "左手";
 					else
 						row.transform.Find ("handIndex").GetComponent<Text> ().text = "右手";
-					row.transform.Find ("estimateValue").GetComponent<Text> ().text = records [i, 4];
+					row.transform.Find ("estimateValue").GetComponent<Text> ().text = records [i, 4].ToString();
 					row.transform.Translate (230, -15 - i * 25, 0);
 					row.SetActive (true);
+
+					ButtonInfo info = new ButtonInfo();
+					info.id = records[i, 5];
+					info.obj = row.transform.GetComponent<Button>().gameObject;
+					row.transform.GetComponent<Button>().onClick.AddListener(
+						delegate ()
+						{
+							selectAction(info);
+							GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorReplayPanel");
+	//                    GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorPatientPlanOrRecord");
+	//                    GameObject obj = GameObject.Find("Canvas/DoctorCheckPlanPanelNew");
+	//                    CreatePlanTable panel = (CreatePlanTable)obj.GetComponent(typeof(CreatePlanTable));
+	//                    panel.Start();
+						}
+					);
 
 				}
 			} else {
 				noRecord.SetActive (true);
 			}
 
-			Debug.Log ("111111111111111111111111111111111111111111111111");
-			Debug.Log (selectRecordList.Count);
+			//Debug.Log ("111111111111111111111111111111111111111111111111");
+			//Debug.Log (selectRecordList.Count);
 			foreach (string id in selectRecordList)
 				Debug.Log (id);
 
@@ -119,7 +195,7 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 
 		if (eventData.pointerPress.name == "historyRecordButton") {
 //			test.HistoryRecord ("20190620", "400001", 0);
-			Debug.Log ("2222222222222222222222222222222222");
+			//Debug.Log ("2222222222222222222222222222222222");
 			int recordNum = 0;
 			if (PlayerPrefs.HasKey("selectRecordNum")) {
 				recordNum = PlayerPrefs.GetInt ("selectRecordNum");
@@ -168,34 +244,40 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 		return retDate;
 	}
 
-	void chooseRecord(ToggleInfo info)
+	void selectAction(ButtonInfo info)
 	{
-		info.status = !info.status;
-		Debug.Log("info info: " + info.id);
-		Debug.Log("info status: " + info.status);
-		if (info.status == true) {
-			selectRecordList.Add (info.id);
-
-			int num = 0;
-			if (PlayerPrefs.HasKey("selectRecordNum")) {
-				num = PlayerPrefs.GetInt ("selectRecordNum") + 1;
-			}
-			PlayerPrefs.SetInt ("selectRecordNum", num);
-			PlayerPrefs.SetString ("selectRecord", info.id);
-
-
-		} else {
-			selectRecordList.Remove(info.id);
-
-			int num = 0;
-			if (PlayerPrefs.HasKey("selectRecordNum")) {
-				num = PlayerPrefs.GetInt ("selectRecordNum") - 1;
-			}
-			PlayerPrefs.SetInt ("selectRecordNum", num);
-
-		}
-		Debug.Log ("aaa列表长度" + selectRecordList.Count);
-		foreach (string id in selectRecordList)
-			Debug.Log(id);
+		Debug.Log("Clicked");
+		PlayerPrefs.SetString("selectRecordLink", info.id);
 	}
+
+//	void chooseRecord(ToggleInfo info)
+//	{
+//		info.status = !info.status;
+//		Debug.Log("info info: " + info.id);
+//		Debug.Log("info status: " + info.status);
+//		if (info.status == true) {
+//			selectRecordList.Add (info.id);
+//
+//			int num = 0;
+//			if (PlayerPrefs.HasKey("selectRecordNum")) {
+//				num = PlayerPrefs.GetInt ("selectRecordNum") + 1;
+//			}
+//			PlayerPrefs.SetInt ("selectRecordNum", num);
+//			PlayerPrefs.SetString ("selectRecord", info.id);
+//
+//
+//		} else {
+//			selectRecordList.Remove(info.id);
+//
+//			int num = 0;
+//			if (PlayerPrefs.HasKey("selectRecordNum")) {
+//				num = PlayerPrefs.GetInt ("selectRecordNum") - 1;
+//			}
+//			PlayerPrefs.SetInt ("selectRecordNum", num);
+//
+//		}
+//		Debug.Log ("aaa列表长度" + selectRecordList.Count);
+//		foreach (string id in selectRecordList)
+//			Debug.Log(id);
+//	}
 }

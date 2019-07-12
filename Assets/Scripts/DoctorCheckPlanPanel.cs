@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class DoctorCheckPlanPanel : MonoBehaviour {
 
@@ -9,8 +10,10 @@ public class DoctorCheckPlanPanel : MonoBehaviour {
     string selectPatientID;
     public InputField nameInput;
 
-	// Use this for initialization
-	void Start () {
+    public GameObject SmallPanel;
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -36,17 +39,12 @@ public class DoctorCheckPlanPanel : MonoBehaviour {
 
     public void ClickDeletePlanButton()
     {
-        GameObject.Find("DoctorCheckPlanPanelNew").GetComponent<CreatePlanTable>().getSelectActList(selectActList);
-        selectPatientID = PlayerPrefs.GetString("selectPatientID");
-        Debug.Log("GetToggleInfo:-------------------");
-        foreach(PlanToggleInfo tInfo in selectActList)
-        {
-            Debug.Log(selectPatientID + "," + tInfo.id + "," + tInfo.hand);
-            //TrainingPlan.deleteTrainingPlan(selectPatientID, tInfo.id, tInfo.hand);
-        }
-        GameObject obj = GameObject.Find("Canvas/DoctorCheckPatientPanelNew");
-        CreatePatientPanel panel = (CreatePatientPanel)obj.GetComponent(typeof(CreatePatientPanel));
-        panel.Start();
+        SmallPanel.SetActive(true);
+
+        GameObject.Find("SearchButton").GetComponent<Button>().interactable = false;
+        GameObject.Find("AddPlanButton").GetComponent<Button>().interactable = false;
+        GameObject.Find("DeletePlanButton").GetComponent<Button>().interactable = false;
+        GameObject.Find("Canvas/DoctorCheckPlanPanelNew/BackButton").GetComponent<Button>().interactable = false;
     }
 
     public void ClickSearchButton()

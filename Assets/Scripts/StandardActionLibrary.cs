@@ -164,6 +164,8 @@ public class StandardActionLibrary : MonoBehaviour {
         mysql.SimpleSql(querySql);
         mysql.Close();
 		downloadPicture (next_pic);
+//		downloadActions (next_left);
+//		downloadActions (next_right);
         
     }
 

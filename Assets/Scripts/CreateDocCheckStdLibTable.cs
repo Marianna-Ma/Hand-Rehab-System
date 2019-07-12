@@ -19,6 +19,11 @@ public class CreateDocCheckStdLibTable : MonoBehaviour {
     string[,] actionTable;
     string patientName = "";
 
+    public GameObject BigPanel;
+    public GameObject SmallPanel;
+    public Button SearchButton;
+    public Button BackButton;
+
     // Use this for initialization
     public void Start () {
         //PlayerPrefs.SetString("selectPatientID", "李四");
@@ -35,7 +40,7 @@ public class CreateDocCheckStdLibTable : MonoBehaviour {
         }
         localPicPath = Application.dataPath + "/StandardActionPic/";
         actionLib = new StandardActionLibrary();
-        actionTable = actionLib.findStandardActions();
+        actionTable = TrainingPlan.searchUnAddTrainingPlan(patientName);
 
         if (actionTable[0, 0] != "null")
         {
@@ -82,9 +87,13 @@ public class CreateDocCheckStdLibTable : MonoBehaviour {
                     delegate ()
                     {
                         docSelectAction(info);
-                        GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorSetPlanPanel");
-                        GameObject obj = GameObject.Find("Canvas/DoctorSetPlanPanel");
-                        obj.GetComponent<DoctorSetPlanPanel>().Start();
+
+                        SearchButton.GetComponent<Button>().interactable = false;
+                        BackButton.GetComponent<Button>().interactable = false;
+                        BigPanel.SetActive(true);
+                        SmallPanel.SetActive(true);
+                        //GameObject obj = GameObject.Find("Canvas/DoctorSetPlanPanel");
+                        //SmallPanel.GetComponent<DoctorSetPlanPanel>().Start();
                     }
                     );
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System;
 
 public class DoctorEditPlanPanel : MonoBehaviour, IPointerClickHandler{
     public InputField setDays;
@@ -16,6 +17,8 @@ public class DoctorEditPlanPanel : MonoBehaviour, IPointerClickHandler{
     string select_days = "";
     string select_times = "";
     string select_span = "";
+
+    public GameObject SmallPanel;
 
     // Use this for initialization
     public void Start () {
@@ -60,11 +63,15 @@ public class DoctorEditPlanPanel : MonoBehaviour, IPointerClickHandler{
             Debug.Log(select_hand + " " + set_day + " " + set_times + " " + set_span);
             Debug.Log("selectStdActionID2:" + select_act_id);
             TrainingPlan.changeTrainingPlan(action_id, select_act_id, select_hand, int.Parse(set_times), int.Parse(set_span), int.Parse(set_day));
+            Messagebox.MessageBox(IntPtr.Zero, "修改训练成功！", "成功", 0);
+            SmallPanel.SetActive(false);
+            GameObject.Find("Canvas/DoctorCheckPlanPanelNew/SearchButton").GetComponent<Button>().interactable = true;
+            GameObject.Find("Canvas/DoctorCheckPlanPanelNew/AddPlanButton").GetComponent<Button>().interactable = true;
+            GameObject.Find("Canvas/DoctorCheckPlanPanelNew/DeletePlanButton").GetComponent<Button>().interactable = true;
+            GameObject.Find("Canvas/DoctorCheckPlanPanelNew/BackButton").GetComponent<Button>().interactable = true;
 
             GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPlanPanelNew");
-            GameObject obj = GameObject.Find("Canvas/DoctorCheckPlanPanelNew");
-            CreatePlanTable panel = (CreatePlanTable)obj.GetComponent(typeof(CreatePlanTable));
-            panel.Start();
+            GameObject.Find("Canvas/DoctorCheckPlanPanelNew").GetComponent<CreatePlanTable>().Start();
         }
 
     }
