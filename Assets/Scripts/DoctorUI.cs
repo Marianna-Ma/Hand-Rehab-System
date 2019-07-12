@@ -83,7 +83,10 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
 				GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorStartPanel");
 			}
 		}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34984b940a16a3a876cc6daefddee02b9832908b
         if (eventData.pointerPress.name == "addPatientButton")  //如果当前按下的按钮是添加患者按钮
         {
             Dropdown select_sex_item = GameObject.Find("Canvas/DoctorAddPatientPanel/SexDropDown").GetComponent<Dropdown>();
@@ -96,8 +99,14 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
                 Messagebox.MessageBox(IntPtr.Zero, "患者账号不在人员表中！", "失败", 0);
             else if (status == 3)
                 Messagebox.MessageBox(IntPtr.Zero, "患者账号已存在！", "失败", 0);
+<<<<<<< HEAD
             else
             {
+=======
+			else if (status == 4)
+				Messagebox.MessageBox (IntPtr.Zero, "账号类型错误！", "失败", 0);
+			else {
+>>>>>>> 34984b940a16a3a876cc6daefddee02b9832908b
                 Messagebox.MessageBox(IntPtr.Zero, "添加患者成功！", "成功", 0);
                 GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorCheckPatientPanelNew");
                 GameObject.Find("Canvas/DoctorCheckPatientPanelNew").GetComponent<CreatePatientPanel>().Start();
@@ -107,8 +116,13 @@ public class DoctorUI : MonoBehaviour, IPointerClickHandler {
             GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("DoctorAddPatientPanel");
 
         }
+<<<<<<< HEAD
        
         if (eventData.pointerPress.name == "selectDateButton") {
+=======
+
+		if (eventData.pointerPress.name == "selectDateButton") {
+>>>>>>> 34984b940a16a3a876cc6daefddee02b9832908b
 			string startDate = startDateText.text.ToString ();
 			string endDate = endDateText.text.ToString ();
 			string startDateString = changeDateFormat (startDate);

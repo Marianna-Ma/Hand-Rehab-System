@@ -38,4 +38,10 @@ public class AdminChangeStandardActionPanel : MonoBehaviour {
         stdlibrary.saveStandardAction(act_id, hand_type);
     }
 
+	public void ClickBackButton()
+	{
+		GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("AddStdActionLibraryPanel");
+	}
+
+
 }
