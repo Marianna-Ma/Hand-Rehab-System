@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Prefab/DeleteStdActionLibraryPanel.prefab.meta
+guid: b7b175c3153eff049b7d1c69dc95ac77
+timeCreated: 1562930452
+=======
+<<<<<<< HEAD
+guid: a7d3c80b8f6167943a09c02afe925889
+timeCreated: 1562896537
+=======
+guid: 87ae7fd13e2de4b4987818bc4d9c9b72
+timeCreated: 1562860810
+>>>>>>> abbc849db63064b5dff7c46af4221efc5ea98d8b
+>>>>>>> 2d99a34e5495e68e89bb1bf3379a14b412f18273:Assets/StandardActionLibrary/4000080.json.meta
+licenseType: Free
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
