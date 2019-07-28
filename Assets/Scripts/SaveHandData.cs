@@ -120,7 +120,7 @@ public class SaveHandData : MonoBehaviour {
     void Start()
     {
         frame_index = 0;
-        startSaveFrame = 0;
+        startSaveFrame = 1;
         saveCompleted = false;
         gameStatus = new GameStatus();
         gameStatus.frame_data = new refencenes0[frameNum];  // json里存frameNum个帧的数据
@@ -136,10 +136,11 @@ public class SaveHandData : MonoBehaviour {
         SaveOverallHandData(frame);
         SaveFingerFrame(frame);
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            startSaveFrame = 1;
-        }
+        //if (Input.GetKeyDown(KeyCode.S))
+        //{
+        //    startSaveFrame = 1;
+        //}
+
         if (frame_index == frameNum)
         {
             SaveJson();

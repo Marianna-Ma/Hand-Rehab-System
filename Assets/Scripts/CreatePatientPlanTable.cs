@@ -10,8 +10,12 @@ public class CreatePatientPlanTable : MonoBehaviour {
     public DataSet currentTP;
     public GameObject PlanData_Prefab;//表头预设
 
+    public GameObject AssistantCamera;
+
     public void Start()
     {
+        GameObject plandata = GameObject.Find("Canvas/PatientCheckPlanPanel/ScrollView/Viewport/Content/PatientPlanData");
+        plandata.SetActive(false);
         GameObject table = GameObject.Find("Canvas/PatientCheckPlanPanel/ScrollView/Viewport/Content");
         foreach (Transform t in table.GetComponentsInChildren<Transform>())
         {
@@ -20,13 +24,14 @@ public class CreatePatientPlanTable : MonoBehaviour {
                 Destroy(t.gameObject);//删除之前的内容
             }
         }
-        //string pt_ID = PlayerPrefs.GetString("selectPatientID");
-        //currentTP = TrainingPlan.findUnfinishedTrainingPlan(pt_ID); //TODO：获得病人编号
-        currentTP = TrainingPlan.findUnfinishedTrainingPlan("300001");
+        string pt_ID = PlayerPrefs.GetString("userID");
+        currentTP = TrainingPlan.findUnfinishedTrainingPlan(pt_ID); //TODO：获得病人编号
+        //currentTP = TrainingPlan.findUnfinishedTrainingPlan("300001");
 
         if (currentTP.Tables[0].Rows.Count > 0)
         {
             CreateTable(currentTP);
+            Debug.Log("generating table……");
         }
     }
 
@@ -39,8 +44,7 @@ public class CreatePatientPlanTable : MonoBehaviour {
     void CreateTable(DataSet dataSet)
     {
         GameObject table = GameObject.Find("Canvas/PatientCheckPlanPanel/ScrollView/Viewport/Content");
-        GameObject plandata = GameObject.Find("Canvas/PatientCheckPlanPanel/ScrollView/Viewport/Content/PatientPlanData");
-        plandata.SetActive(false);
+        
 
         for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)//添加并修改预设的过程
         {
@@ -75,7 +79,14 @@ public class CreatePatientPlanTable : MonoBehaviour {
                 {
                     selectAction(info);
                     GameObject.Find("Canvas").GetComponent<MainMenuManager>().OpenPanelByName("PatientTrainPanel");
+                    AssistantCamera.SetActive(true);
                     GameObject.Find("PatientTrainPanel/TrainTestButton").GetComponent<TimeCountDown>().StartCountDown();
+                    string left = "", right = "";
+                    if (info.hand == 0) left = "/StandardActionLibrary/" + info.id + "0.json";
+                    else right = "/StandardActionLibrary/" + info.id + "1.json";
+                    Debug.Log(left + "\n" + right);
+                    GameObject.Find("PatientTrainPanel/TrainTestButton").GetComponent<TimeCountDown>()
+                    .CreateDataHands(left, right);
                 }
                 );
             string name = dataSet.Tables[0].Rows[i][2].ToString();

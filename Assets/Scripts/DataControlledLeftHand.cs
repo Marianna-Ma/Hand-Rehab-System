@@ -14,6 +14,11 @@ public class DataControlledLeftHand : handData {
     DateTime old_Time;
     double delta24;
 
+	public void Init(string path)
+	{
+		defaultPath = path;
+	}
+
     // Use this for initialization
     void Start () {
         //provider1 = FindObjectOfType<LeapProvider>() as LeapProvider;
@@ -42,6 +47,13 @@ public class DataControlledLeftHand : handData {
         }
             
     }
+
+	void MoveToCamera()
+	{
+		Vector3 cam1 = GameObject.Find("Main Camera").transform.position;
+		Vector3 cam2 = GameObject.Find("AssistantCamera").transform.position;
+		transform.position = transform.position + cam2 - cam1;
+	}
 
     void moveLeftHand()
     {

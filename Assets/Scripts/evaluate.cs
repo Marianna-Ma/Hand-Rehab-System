@@ -125,12 +125,13 @@ public class evaluate : MonoBehaviour
         mysql = new MySqlAccess(host, port, userName, password, databaseName);
         mysql.OpenSql();
 
-        string nowtime = DateTime.Now.ToString("yyyyMMdd");
+        string nowtime = DateTime.Now.ToString("yyyyMMddHHmmss");
         string ac_id = PlayerPrefs.GetString("selectStdActionID");
-        string hand = "";
-        string ptId = "";
-        string querySql = "insert into rec(rec_test) values('" + GetEvaluation() + "') where rec_date='" + nowtime + "',rec_actID='" +
-            ac_id + "',rec_hand='" + hand + "',rec_ptID='" + ptId + "'";
+        int hand = PlayerPrefs.GetInt("selectPlanHand");
+        string ptId = PlayerPrefs.GetString("userID");
+        string link = PlayerPrefs.GetString("patientHandDataPath");
+        string querySql = "insert into rec(rec_date, rec_actID, rec_hand, rec_ptID, rec_link, rec_test) " +
+            "values('" + nowtime + "','" + ac_id + "','" + hand + "','" + ptId + "','" + link + "','" + GetEvaluation() + "')";
 
         mysql.SimpleSql(querySql);
         mysql.Close();
@@ -369,8 +370,8 @@ public class evaluate : MonoBehaviour
     /// </summary>
     public void PrintEvaluation()
     {
-        leaphandleft.SetActive(false);
-        leaphandright.SetActive(false);
+        //leaphandleft.SetActive(false);
+        //leaphandright.SetActive(false);
         //GameObject.Find("Canvas").GetComponent<HandControl>().InvisiHands();
 
         SpecialEffectFirst();
@@ -389,7 +390,7 @@ public class evaluate : MonoBehaviour
     {
         _Pre_2.SetActive(true);
         _pre_3.SetActive(true);
-        GameObject.Find("ResultText").SetActive(true);
+        GameObject.Find("Canvas/PatientTrainPanel/ResultText").SetActive(true);
         if (Evaluation < 0.5)
         {
             GameObject.Find("ResultText").GetComponent<Text>().text = "继续努力哦~";
